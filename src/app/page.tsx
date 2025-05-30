@@ -1,6 +1,7 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react";
+import { motion } from "framer-motion";
 
 export default function Home() {
 	const { messages, input, handleInputChange, handleSubmit } = useChat({ api: "api/openai" })
@@ -23,13 +24,19 @@ export default function Home() {
 			</div>
 
 			<form onSubmit={handleSubmit} className="bottom-4 left-1/2 fixed -translate-x-1/2">
-				<input
+				<motion.input
 					autoFocus
 					type="text"
 					placeholder="Ask Anything..."
+
 					value={input}
 					onChange={handleInputChange}
-					className="bg-zinc-900 px-4 py-2 border border-white/15 rounded-full"
+
+					className="bg-zinc-900 px-4 py-2 border rounded-full focus:outline-none w-xl"
+
+					initial={{ scale: 0.8, borderColor: "rgba(255, 255, 255, 0.15)" }}
+					animate={{ scale: 1 }}
+					whileFocus={{ marginBottom: 12, borderColor: "rgba(255, 255, 255, 0.5)" }}
 				/>
 			</form>
 		</div>
