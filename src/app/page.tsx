@@ -4,7 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { motion } from "framer-motion";
 
 export default function Home() {
-	const { messages, input, handleInputChange, handleSubmit } = useChat({ api: "api/openai" })
+	const { messages, input, handleInputChange, handleSubmit, status, reload, stop } = useChat({ api: "api/openai", onFinish: (message, { usage }) => { console.log("Tokens Usage", usage.totalTokens) } })
 
 	return (
 		<div className="p-12">
@@ -13,18 +13,30 @@ export default function Home() {
 					switch (message.role) {
 						case "user":
 							return (
-								<p className="self-end bg-zinc-800 px-3 py-2 rounded-full">{message.content}</p>
+								<p key={message.id} className="self-end bg-zinc-800 px-4 py-2 rounded-full">{message.content}</p>
 							)
 						case "assistant":
 							return (
-								<p className="self-start w-4/5">{message.content}</p>
+								<div key={message.id} className="self-start w-4/5">
+									{message.parts.map((part, index) => (
+										part.type === "text" && <p key={index}>{part.text}</p>
+									))}
+								</div>
 							)
 					}
 				})}
 			</div>
 
+			<div className="top-4 left-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border border-white/15 rounded-2xl">
+				<p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono text-center">STATUS: {status}</p>
+				<div className="bg-white/15 mx-2 h-px"></div>
+				<button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => reload()}>Reload</button>
+				<button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => stop()}>Stop</button>
+			</div>
+
 			<form onSubmit={handleSubmit} className="bottom-4 left-1/2 fixed -translate-x-1/2">
 				<motion.input
+					required
 					autoFocus
 					type="text"
 					placeholder="Ask Anything..."
@@ -34,9 +46,9 @@ export default function Home() {
 
 					className="bg-zinc-900 px-4 py-2 border rounded-full focus:outline-none w-xl"
 
-					initial={{ scale: 0.8, borderColor: "rgba(255, 255, 255, 0.15)" }}
+					initial={{ scale: 0.8, borderColor: "rgba(255, 255, 255, 0.15)", opacity: 0.5 }}
 					animate={{ scale: 1 }}
-					whileFocus={{ marginBottom: 12, borderColor: "rgba(255, 255, 255, 0.5)" }}
+					whileFocus={{ marginBottom: 12, borderColor: "rgba(255, 255, 255, 0.35)", opacity: 1 }}
 				/>
 			</form>
 		</div>
