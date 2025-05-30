@@ -2,9 +2,16 @@
 
 import { useChat } from "@ai-sdk/react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function Home() {
-	const { messages, input, handleInputChange, handleSubmit, status, reload, stop } = useChat({ api: "api/openai", onFinish: (message, { usage }) => { console.log("Tokens Usage", usage.totalTokens) } })
+	const { messages, input, handleInputChange, handleSubmit, status, reload, stop } = useChat({ api: "api/openai", onFinish: (message, { usage }) => { finishCallback(message.content, usage.totalTokens) } })
+
+	const [totalTokens, setTotalTokens] = useState(0)
+
+	function finishCallback(message: string, usage: number) {
+		setTotalTokens(prev => prev + usage)
+	}
 
 	return (
 		<div className="p-12">
@@ -28,7 +35,8 @@ export default function Home() {
 			</div>
 
 			<div className="top-4 left-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border border-white/15 rounded-2xl">
-				<p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono text-center">STATUS: {status}</p>
+				<p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">TOKENS: {totalTokens}</p>
+				<p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">STATUS: {status}</p>
 				<div className="bg-white/15 mx-2 h-px"></div>
 				<button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => reload()}>Reload</button>
 				<button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => stop()}>Stop</button>
