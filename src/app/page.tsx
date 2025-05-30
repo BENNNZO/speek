@@ -3,6 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import Image from "next/image";
 
 import Messages from "./components/chat/Messages";
 
@@ -21,7 +22,7 @@ export default function Home() {
 	return (
 		<div className="p-12">
 			{/* AI CHAT MESSAGES */}
-			<Messages messages={messages} />
+			<Messages messages={messages} status={status} />
 
 			{/* BOTTOM GRADIENT */}
 			<div className="bottom-4 left-0 fixed bg-gradient-to-t from-black to-transparent w-full h-32"></div>
@@ -67,3 +68,4 @@ export default function Home() {
 // add support for images
 // add support for multiple chats
 // add new chat button
+// add auto scrolling as the chat gets longer

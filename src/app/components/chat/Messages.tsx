@@ -1,8 +1,9 @@
 import { UIMessage } from "ai"
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import Image from "next/image";
 
-export default function Messages({ messages }: { messages: UIMessage[] }) {
+export default function Messages({ messages, status }: { messages: UIMessage[], status: string }) {
     return (
         <div className="flex flex-col gap-4 mx-auto pb-32 max-w-4xl">
             {messages.map((message) => {
@@ -21,6 +22,7 @@ export default function Messages({ messages }: { messages: UIMessage[] }) {
                         )
                 }
             })}
+            {status === "submitted" && <Image src="/loader.svg" width={35} height={35} alt="loader" />}
         </div>
     )
 }
