@@ -1,15 +1,18 @@
 import { openai } from "@ai-sdk/openai";
-import { streamText } from "ai";
+import { Message, streamText } from "ai";
 
 export const maxDuration = 30
 
 export async function POST(req: Request) {
-    const { messages } = await req.json()
+    const { messages, model }: { messages: Message[], model: string } = await req.json()
+
+    console.log(model)
 
     const result = streamText({
-        model: openai("gpt-4.1-nano"),    // $0.10/m
-        // model: openai("gpt-4o-mini"),     // $0.15/m
-        // model: openai("o4-mini"),            // $1.10/m
+        // gpt-4.1-nano    // $0.10/m
+        // gpt-4o-mini     // $0.15/m
+        // o4-mini         // $1.10/m
+        model: openai(model),
         messages,
     })
 
