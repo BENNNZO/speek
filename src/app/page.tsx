@@ -28,19 +28,9 @@ export default function Home() {
 						case "assistant":
 							return (
 								<div key={message.id} className="flex flex-col self-start gap-4 prose-invert w-4/5 prose">
-									{/* {message.parts.map((part, index) => (
+									{message.parts.map((part, index) => (
 										part.type === "text" && <Markdown remarkPlugins={[remarkGfm]} key={index}>{part.text}</Markdown>
 									))}
-									<div className="bg-white/15 h-px"></div> */}
-									<div>
-										{message.parts.map((part, index) => (
-											part.type === "text" && <Markdown key={index}>{part.text}</Markdown>
-										))}
-									</div>
-									{/* <div className="bg-white/15 h-px"></div>
-									{message.parts.map((part, index) => (
-										part.type === "text" && <p key={index}>{part.text}</p>
-									))} */}
 								</div>
 							)
 					}
