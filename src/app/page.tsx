@@ -3,6 +3,8 @@
 import { useChat } from "@ai-sdk/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function Home() {
 	const { messages, input, handleInputChange, handleSubmit, status, reload, stop } = useChat({ api: "api/openai", onFinish: (message, { usage }) => { finishCallback(message.content, usage.totalTokens) } })
@@ -24,10 +26,18 @@ export default function Home() {
 							)
 						case "assistant":
 							return (
-								<div key={message.id} className="self-start w-4/5">
+								<div key={message.id} className="flex flex-col self-start gap-4 prose-invert w-4/5 prose">
+									{/* {message.parts.map((part, index) => (
+										part.type === "text" && <Markdown remarkPlugins={[remarkGfm]} key={index}>{part.text}</Markdown>
+									))}
+									<div className="bg-white/15 h-px"></div> */}
+									{message.parts.map((part, index) => (
+										part.type === "text" && <Markdown key={index}>{part.text}</Markdown>
+									))}
+									{/* <div className="bg-white/15 h-px"></div>
 									{message.parts.map((part, index) => (
 										part.type === "text" && <p key={index}>{part.text}</p>
-									))}
+									))} */}
 								</div>
 							)
 					}
@@ -52,11 +62,11 @@ export default function Home() {
 					value={input}
 					onChange={handleInputChange}
 
-					className="bg-zinc-900 px-4 py-2 border rounded-full focus:outline-none w-xl"
+					className="bg-zinc-900 backdrop-blur-sm px-4 py-2 border rounded-full focus:outline-none w-xl"
 
-					initial={{ scale: 0.8, borderColor: "rgba(255, 255, 255, 0.15)", opacity: 0.5 }}
+					initial={{ scale: 0.8, borderColor: "rgba(255, 255, 255, 0.1)" }}
 					animate={{ scale: 1 }}
-					whileFocus={{ marginBottom: 12, borderColor: "rgba(255, 255, 255, 0.35)", opacity: 1 }}
+					whileFocus={{ marginBottom: 12, borderColor: "rgba(255, 255, 255, 0.15)" }}
 				/>
 			</form>
 		</div>
