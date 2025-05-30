@@ -22,7 +22,7 @@ export default function Home() {
 					switch (message.role) {
 						case "user":
 							return (
-								<p key={message.id} className="self-end bg-zinc-800 px-4 py-2 rounded-full">{message.content}</p>
+								<p key={message.id} className="self-end bg-zinc-800 px-4 py-2 rounded-3xl max-w-4/5">{message.content}</p>
 							)
 						case "assistant":
 							return (
@@ -31,9 +31,11 @@ export default function Home() {
 										part.type === "text" && <Markdown remarkPlugins={[remarkGfm]} key={index}>{part.text}</Markdown>
 									))}
 									<div className="bg-white/15 h-px"></div> */}
-									{message.parts.map((part, index) => (
-										part.type === "text" && <Markdown key={index}>{part.text}</Markdown>
-									))}
+									<div>
+										{message.parts.map((part, index) => (
+											part.type === "text" && <Markdown key={index}>{part.text}</Markdown>
+										))}
+									</div>
 									{/* <div className="bg-white/15 h-px"></div>
 									{message.parts.map((part, index) => (
 										part.type === "text" && <p key={index}>{part.text}</p>
