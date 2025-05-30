@@ -29,8 +29,14 @@ export default function Home() {
 			<div className="bottom-0 left-0 fixed bg-black w-full h-4"></div>
 
 			{/* INPUT AREA */}
-			<div className="bottom-4 left-1/2 fixed flex gap-2 bg-red-800 -translate-x-1/2">
-				<input type="checkbox" checked={thinking} onChange={() => setThinking(prev => !prev)} />
+			<div className="bottom-4 left-1/2 fixed flex gap-2 -translate-x-1/2">
+				<motion.button
+					onClick={() => setThinking(prev => !prev)}
+					className={`self-end ${thinking ? "bg-blue-950 border-blue-500 hover:border-blue-400" : "bg-zinc-900 border-white/10 hover:border-white/25"} px-4 py-2 border rounded-full duration-150 cursor-pointer active:scale-95`}
+				>
+					Reasoning
+				</motion.button>
+
 				<form onSubmit={(event) => {
 					handleSubmit(event, {
 						body: {
