@@ -3,6 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import Image from "next/image";
 
 import Messages from "./components/chat/Messages";
 
@@ -14,7 +15,7 @@ export default function Home() {
 		setTotalTokens(prev => prev + usage)
 	}
 
-	const { messages, input, handleInputChange, handleSubmit, status, reload, stop } = useChat({
+	const { messages, input, handleInputChange, handleSubmit, status, reload, stop, id } = useChat({
 		api: "api/openai",
 		onFinish: (message, { usage }) => { finishCallback(message.content, usage.totalTokens) }
 	})
@@ -29,41 +30,39 @@ export default function Home() {
 			<div className="bottom-0 left-0 fixed bg-black w-full h-4"></div>
 
 			{/* INPUT AREA */}
-			<div className="bottom-4 left-1/2 fixed flex gap-2 -translate-x-1/2">
+			<div className="bottom-8 left-1/2 fixed flex gap-2 -translate-x-1/2">
 				<motion.button
 					onClick={() => setThinking(prev => !prev)}
-					className={`self-end ${thinking ? "bg-blue-950 border-blue-500 hover:border-blue-400" : "bg-zinc-900 border-white/10 hover:border-white/25"} px-4 py-2 border rounded-full duration-150 cursor-pointer active:scale-95`}
+					className={`self-end ${thinking ? "bg-blue-950 border-blue-500 hover:border-blue-400 text-white" : "bg-zinc-900 border-white/15 hover:border-white/25 text-zinc-400"} px-4 py-2 border-2 rounded-full duration-150 cursor-pointer active:scale-95`}
 				>
 					Reasoning
 				</motion.button>
 
-				<form onSubmit={(event) => {
-					handleSubmit(event, {
-						body: {
-							model: thinking ? "o4-mini" : "gpt-4.1-nano"
-						}
-					})
-				}}>
-					<motion.input
+				<form
+					onSubmit={(event) => {
+						handleSubmit(event, {
+							body: {
+								model: thinking ? "o4-mini" : "gpt-4.1-nano"
+							}
+						})
+					}}
+					className="flex gap-2 bg-zinc-900 py-1.5 pr-1.5 pl-4 border-2 border-white/15 rounded-full"
+				>
+					<input
 						required
 						autoFocus
 						type="text"
 						placeholder="Ask Anything..."
-
 						value={input}
 						onChange={handleInputChange}
-
-						className="bg-zinc-900 backdrop-blur-sm px-4 py-2 border rounded-full focus:outline-none w-xl"
-
-						initial={{ scale: 0.8, borderColor: "rgba(255, 255, 255, 0.1)" }}
-						animate={{ scale: 1 }}
-						whileFocus={{ marginBottom: 12, borderColor: "rgba(255, 255, 255, 0.15)" }}
+						className="focus:outline-none w-96"
 					/>
 				</form>
 			</div>
 
 			{/* DEBUG INFO */}
 			<div className="top-4 left-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border border-white/15 rounded-2xl">
+				<p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">INPUT: {JSON.stringify(input)}</p>
 				<p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">TOKENS: {totalTokens}</p>
 				<p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">STATUS: {status}</p>
 				<p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">THINKING: {JSON.stringify(thinking)}</p>
