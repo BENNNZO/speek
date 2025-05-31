@@ -5,7 +5,7 @@ import Message from "./Message";
 export default function Messages({ messages, status, reloadFunction }: { messages: UIMessage[], status: string, reloadFunction: () => void }) {
 
     return (
-        <div className="flex flex-col gap-4 mx-auto pb-32 max-w-4xl">
+        <div className="flex flex-col gap-8 mx-auto pb-32 max-w-4xl">
             {messages.map((message) => (
                 <Message key={message.id} message={message} reloadFunction={reloadFunction} />
             ))}
