@@ -15,7 +15,7 @@ export default function Home() {
 		setTotalTokens(prev => prev + usage)
 	}
 
-	const { messages, input, handleInputChange, handleSubmit, status, reload, stop } = useChat({
+	const { messages, input, handleInputChange, handleSubmit, status, reload, stop, setMessages } = useChat({
 		api: "api/openai",
 		onFinish: (message, { usage }) => { finishCallback(usage.totalTokens) }
 	})
@@ -23,7 +23,7 @@ export default function Home() {
 	return (
 		<div className="p-12">
 			{/* AI CHAT MESSAGES */}
-			<Messages messages={messages} status={status} />
+			<Messages messages={messages} status={status} reloadFunction={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })} />
 
 			{/* BOTTOM GRADIENT */}
 			<div className="bottom-4 left-0 fixed bg-gradient-to-t from-black to-transparent w-full h-32"></div>
@@ -67,8 +67,13 @@ export default function Home() {
 				<p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">STATUS: {status}</p>
 				<p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">THINKING: {JSON.stringify(thinking)}</p>
 				<div className="bg-white/15 mx-2 h-px"></div>
-				<button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => reload()}>Reload</button>
+				<button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}>Reload</button>
 				<button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => stop()}>Stop</button>
+				<button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => window.navigator.clipboard.writeText(JSON.stringify(messages))}>Copy Messages</button>
+				<button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={async () => {
+					const text = await window.navigator.clipboard.readText()
+					setMessages(JSON.parse(text))
+				}}>Paste Messages</button>
 			</div>
 		</div>
 	);
