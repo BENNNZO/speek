@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, hover } from "framer-motion";
 import { UIMessage } from "ai"
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -33,20 +33,44 @@ export default function Message({ message, reloadFunction }: { message: UIMessag
                             </div>
                         )
                     ))}
-                    <div className="top-full left-0 absolute flex justify-center items-center gap-3 pt-2 not-prose">
-                        <CopyButton copied={copied} content={message.content} setCopied={setCopied} />
-                        <Image
-                            src="/refresh.svg"
-                            width={25}
-                            height={25}
-                            alt="stop"
-                            className="opacity-50 hover:opacity-100 invert pb-0.5 duration-150 cursor-pointer"
-                            onClick={() => reloadFunction()}
-                        />
+                    <div className="top-full left-0 absolute flex justify-center items-center gap-2 pt-2 not-prose">
+                        <Button hoverText="Copy">
+                            <CopyButton copied={copied} content={message.content} setCopied={setCopied} />
+                        </Button>
+                        <Button hoverText="Reason">
+                            <Image
+                                src="/bulb.svg"
+                                width={25}
+                                height={25}
+                                alt="stop"
+                                className="opacity-50 hover:opacity-100 invert ml-1 duration-150 cursor-pointer"
+                            />
+                        </Button>
+                        <Button hoverText="Retry">
+                            <Image
+                                src="/refresh.svg"
+                                width={25}
+                                height={25}
+                                alt="stop"
+                                className="opacity-50 hover:opacity-100 invert duration-150 cursor-pointer"
+                                onClick={() => reloadFunction()}
+                            />
+                        </Button>
                     </div>
                 </div>
             )
     }
+}
+
+function Button({ hoverText, children }: { hoverText: string, children: React.ReactNode }) {
+    return (
+        <button className="group relative">
+            {children}
+            <div className="top-[calc(100%+4px)] left-1/2 absolute opacity-0 group-hover:opacity-100 -translate-x-1/2 duration-150">
+                <p className="bg-zinc-800 px-2 py-0.5 rounded-lg text-zinc-300">{hoverText}</p>
+            </div>
+        </button>
+    )
 }
 
 function CopyButton({ copied, content, setCopied }: { copied: boolean, content: string, setCopied: Function }) {
