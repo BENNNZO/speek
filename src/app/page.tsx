@@ -11,13 +11,13 @@ export default function Home() {
 	const [totalTokens, setTotalTokens] = useState(0)
 	const [thinking, setThinking] = useState(false)
 
-	function finishCallback(message: string, usage: number) {
+	function finishCallback(usage: number) {
 		setTotalTokens(prev => prev + usage)
 	}
 
-	const { messages, input, handleInputChange, handleSubmit, status, reload, stop, id } = useChat({
+	const { messages, input, handleInputChange, handleSubmit, status, reload, stop } = useChat({
 		api: "api/openai",
-		onFinish: (message, { usage }) => { finishCallback(message.content, usage.totalTokens) }
+		onFinish: (message, { usage }) => { finishCallback(usage.totalTokens) }
 	})
 
 	return (
