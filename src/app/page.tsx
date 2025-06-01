@@ -26,8 +26,8 @@ export default function Home() {
 			<Messages messages={messages} status={status} reloadFunction={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })} />
 
 			{/* BOTTOM GRADIENT */}
-			<div className="bottom-4 left-0 fixed bg-gradient-to-t from-black to-transparent w-full h-32"></div>
-			<div className="bottom-0 left-0 fixed bg-black w-full h-4"></div>
+			<div className="bottom-4 left-0 fixed bg-gradient-to-t from-zinc-900 to-transparent w-full h-32"></div>
+			<div className="bottom-0 left-0 fixed bg-zinc-900 w-full h-4"></div>
 
 			{/* INPUT AREA */}
 			<div className="bottom-8 left-1/2 fixed flex gap-2 -translate-x-1/2">
@@ -46,7 +46,7 @@ export default function Home() {
 							}
 						})
 					}}
-					className="flex gap-2 bg-zinc-900 py-1.5 pr-1.5 pl-4 border-2 border-white/15 rounded-full"
+					className="flex gap-2 bg-zinc-800 py-1.5 pr-1.5 pl-4 border-2 border-white/15 rounded-full"
 				>
 					<input
 						required

@@ -1,38 +1,63 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, hover } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { UIMessage } from "ai"
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
 
 export default function Message({ message, reloadFunction }: { message: UIMessage, reloadFunction: () => void }) {
+    const [editState, setEditState] = useState(false)
 
     switch (message.role) {
         case "user":
             return (
-                <motion.div
-                    className="group/container relative self-end max-w-4/5"
-                    initial={{ opacity: 0.75, scale: 0.75 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                >
-                    <p className="bg-zinc-900 px-4 py-2 rounded-3xl text-zinc-200">{message.content}</p>
-                    <div className="top-full right-0 absolute flex justify-center items-center gap-2 opacity-0 group-hover/container:opacity-100 pt-2 duration-150">
-                        <Button hoverText="Copy" delay={0}>
-                            <CopyButton content={message.content} />
-                        </Button>
-                        <Button hoverText="Edit" delay={0.1}>
-                            <Image
-                                src="/pencil.svg"
-                                width={22}
-                                height={22}
-                                alt="stop"
-                                className="opacity-50 hover:opacity-100 invert ml-1 duration-150 cursor-pointer"
-                            />
-                        </Button>
-                    </div>
-                </motion.div>
+                <>
+                    <motion.div
+                        className="group/container relative self-end max-w-4/5"
+                        initial={{ opacity: 0.75, scale: 0.75 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        layoutId={message.id}
+                    >
+                        <p className="bg-zinc-800 px-4 py-2 rounded-3xl text-zinc-200">{message.content}</p>
+                        <div className="top-full right-0 absolute flex justify-center items-center gap-2 opacity-0 group-hover/container:opacity-100 pt-2 duration-150">
+                            <Button hoverText="Copy" delay={0}>
+                                <CopyButton content={message.content} />
+                            </Button>
+                            <Button hoverText="Edit" delay={0.1}>
+                                <Image
+                                    src="/pencil.svg"
+                                    width={22}
+                                    height={22}
+                                    alt="stop"
+                                    className="opacity-50 hover:opacity-100 invert ml-1 duration-150 cursor-pointer"
+                                    onClick={() => setEditState(true)}
+                                />
+                            </Button>
+                        </div>
+                    </motion.div>
+                    <AnimatePresence>
+                        {editState &&
+                            <motion.div
+                                initial={{ backdropFilter: "blur(0px)" }}
+                                animate={{ backdropFilter: "blur(20px)" }}
+                                exit={{ backdropFilter: "blur(0px)" }}
+                                className="z-10 fixed inset-0 place-items-center grid backdrop-blur-md"
+                                onClick={() => setEditState(false)}
+                            >
+                                <motion.div
+                                    className="bg-zinc-800 px-4 py-2 border border-white/15 rounded-3xl"
+                                    onClick={(e) => e.stopPropagation()}
+                                    layoutId={message.id}
+                                >
+                                    <input autoFocus type="text" placeholder="editing..." className="focus:outline-none" value={message.content} />
+                                    <button onClick={() => setEditState(false)}>CLOSE</button>
+                                </motion.div>
+                            </motion.div>
+                        }
+                    </AnimatePresence>
+                </>
             )
         case "assistant":
             return (
