@@ -13,9 +13,9 @@ export default function Message({ message, reloadFunction }: { message: UIMessag
     switch (message.role) {
         case "user":
             return (
-                <>
+                <div className="relative self-end max-w-4/5">
                     <motion.div
-                        className="group/container relative self-end max-w-4/5"
+                        className="group/container"
                         initial={{ opacity: 0.75, scale: 0.75 }}
                         animate={{ opacity: 1, scale: 1 }}
                         layoutId={message.id}
@@ -40,24 +40,38 @@ export default function Message({ message, reloadFunction }: { message: UIMessag
                     <AnimatePresence>
                         {editState &&
                             <motion.div
-                                initial={{ backdropFilter: "blur(0px)" }}
-                                animate={{ backdropFilter: "blur(20px)" }}
-                                exit={{ backdropFilter: "blur(0px)" }}
-                                className="z-10 fixed inset-0 place-items-center grid backdrop-blur-md"
+                                initial={{ backdropFilter: "blur(0px)", background: "rgba(0, 0, 0, 0)" }}
+                                animate={{ backdropFilter: "blur(20px)", background: "rgba(0, 0, 0, 0.5)" }}
+                                exit={{ backdropFilter: "blur(0px)", background: "rgba(0, 0, 0, 0)" }}
+                                className="z-10 fixed inset-0 place-items-center grid"
                                 onClick={() => setEditState(false)}
                             >
                                 <motion.div
-                                    className="bg-zinc-800 px-4 py-2 border border-white/15 rounded-3xl"
+                                    className="flex flex-col p-4"
                                     onClick={(e) => e.stopPropagation()}
                                     layoutId={message.id}
                                 >
-                                    <input autoFocus type="text" placeholder="editing..." className="focus:outline-none" value={message.content} />
-                                    <button onClick={() => setEditState(false)}>CLOSE</button>
+                                    <div className="flex flex-col bg-zinc-700 rounded-3xl w-xl h-74">
+                                        <textarea autoFocus placeholder="editing..." className="mx-4 mt-4 mb-2 focus:outline-none h-full resize-none edit-scrollbar" value={message.content} />
+                                        <div className="flex justify-end gap-2 p-3">
+                                            <button
+                                                className="bg-zinc-800 hover:bg-zinc-900 px-3 py-1 rounded-full duration-150 cursor-pointer"
+                                                onClick={() => setEditState(false)}
+                                            >
+                                                Close
+                                            </button>
+                                            <button
+                                                className="bg-zinc-200 hover:bg-white px-3 py-1 rounded-full text-zinc-800 duration-150 cursor-pointer"
+                                            >
+                                                Send
+                                            </button>
+                                        </div>
+                                    </div>
                                 </motion.div>
                             </motion.div>
                         }
                     </AnimatePresence>
-                </>
+                </div>
             )
         case "assistant":
             return (

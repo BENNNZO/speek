@@ -1,2 +1,30 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+
+.edit-scrollbar {
+    --sb-track-color: oklch(37% 0.013 285.805);
+    --sb-thumb-color: #949494;
+    --sb-size: 6px;
+}
+
+.edit-scrollbar::-webkit-scrollbar {
+    width: var(--sb-size)
+}
+
+.edit-scrollbar::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 4px;
+}
+
+.edit-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 4px;
+
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    .edit-scrollbar {
+        scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    }
+}
