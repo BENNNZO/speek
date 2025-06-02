@@ -2,7 +2,8 @@
 
 import { useChat } from "@ai-sdk/react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { basic } from "@/testChats";
 
 import Messages from "@/components/chat/Messages";
 
@@ -18,6 +19,10 @@ export default function Home() {
         api: "api/openai",
         onFinish: (message, { usage }) => { finishCallback(usage.totalTokens) }
     })
+
+    useEffect(() => {
+        setMessages(basic)
+    }, [])
 
     return (
         <div className="p-12">
