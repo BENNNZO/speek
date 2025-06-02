@@ -3,9 +3,8 @@
 import { useChat } from "@ai-sdk/react";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import Image from "next/image";
 
-import Messages from "./components/chat/Messages";
+import Messages from "@/components/chat/Messages";
 
 export default function Home() {
 	const [totalTokens, setTotalTokens] = useState(0)
@@ -88,3 +87,7 @@ export default function Home() {
 // add support for multiple chats
 // add new chat button
 // add auto scrolling as the chat gets longer
+
+
+
+// 90% of what openAI offers at 10% of the price
