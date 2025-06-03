@@ -32,13 +32,24 @@ export default function Home() {
         console.log(searchParams.get("id"))
     }, [])
 
+    // function for reload button on each assistant message
     function reloadId(id: string) {
         messages.forEach((message, index) => {
             if (message.id === id) {
                 const userMessage = messages[index - 1]
+
                 setMessages(messages.slice(0, index - 1))
-                append({ role: "user", content: userMessage.content }, { body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })
-                // setMessages(appendClientMessage({ messages: messages.slice(0, index - 1), message: userMessage }))
+                append(userMessage, { body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })
+            }
+        })
+    }
+
+    // function for edit button on each user message
+    function editId(id: string, content: string) {
+        messages.forEach((message, index) => {
+            if (message.id === id) {
+                setMessages(messages.slice(0, index))
+                append({ role: "user", content }, { body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })
             }
         })
     }
@@ -50,6 +61,7 @@ export default function Home() {
                 messages={messages}
                 status={status}
                 reloadFunction={(id: string) => reloadId(id)}
+                editFunction={(id: string, content: string) => editId(id, content)}
             // reloadFunction={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
             />
 
@@ -118,14 +130,14 @@ export default function Home() {
     );
 }
 
-// add retry button on all messages
-// add a edit button to user messages
-// error handling
-// make the input box get taller as more content is added
-// add support for images
-// add support for multiple chats
-// add new chat button
-// add auto scrolling as the chat gets longer
+// [ x ] add retry button on all messages
+// [ x ] add a edit button to user messages
+// [  ] error handling
+// [  ] make the input box get taller as more content is added
+// [  ] add support for images
+// [  ] add support for multiple chats
+// [  ] add new chat button
+// [  ] add auto scrolling as the chat gets longer
 
 
 

@@ -7,8 +7,9 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
 
-export default function Message({ message, reloadFunction }: { message: UIMessage, reloadFunction: (id: string) => void }) {
+export default function Message({ message, reloadFunction, editFunction }: { message: UIMessage, reloadFunction: (id: string) => void, editFunction: (id: string, content: string) => void }) {
     const [editState, setEditState] = useState(false)
+    const [editContent, setEditContent] = useState(message.content)
 
     switch (message.role) {
         case "user":
@@ -16,8 +17,6 @@ export default function Message({ message, reloadFunction }: { message: UIMessag
                 <div className="relative self-end max-w-4/5">
                     <motion.div
                         className="group/container"
-                        initial={{ opacity: 0.75, scale: 0.75 }}
-                        animate={{ opacity: 1, scale: 1 }}
                         layoutId={message.id}
                     >
                         <p className="bg-zinc-900 px-4 py-2 border-t border-t-white/15 rounded-3xl text-zinc-200">{message.content}</p>
@@ -51,17 +50,18 @@ export default function Message({ message, reloadFunction }: { message: UIMessag
                                     onClick={(e) => e.stopPropagation()}
                                     layoutId={message.id}
                                 >
-                                    <div className="flex flex-col bg-zinc-700 rounded-3xl w-xl h-74">
-                                        <textarea autoFocus placeholder="editing..." className="mx-4 mt-4 mb-2 focus:outline-none h-full resize-none edit-scrollbar" value={message.content} />
+                                    <div className="flex flex-col bg-zinc-800 border-t border-t-white/15 rounded-3xl w-xl h-74">
+                                        <textarea autoFocus placeholder="editing..." className="mx-5 mt-4 mb-2 focus:outline-none h-full resize-none edit-scrollbar" value={editContent} onChange={(e) => setEditContent(e.target.value)} />
                                         <div className="flex justify-end gap-2 p-3">
                                             <button
-                                                className="bg-zinc-800 hover:bg-zinc-900 px-3 py-1 rounded-full duration-150 cursor-pointer"
+                                                className="bg-zinc-900 hover:bg-zinc-950 px-3 py-1 border-t border-t-white/15 rounded-full duration-150 cursor-pointer"
                                                 onClick={() => setEditState(false)}
                                             >
                                                 Close
                                             </button>
                                             <button
-                                                className="bg-zinc-200 hover:bg-white px-3 py-1 rounded-full text-zinc-800 duration-150 cursor-pointer"
+                                                className="bg-zinc-200 hover:bg-white px-3 py-1 border-t border-t-white/15 rounded-full text-zinc-950 duration-150 cursor-pointer"
+                                                onClick={() => editFunction(message.id, editContent)}
                                             >
                                                 Send
                                             </button>
