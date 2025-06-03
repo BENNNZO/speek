@@ -7,7 +7,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
 
-export default function Message({ message, reloadFunction }: { message: UIMessage, reloadFunction: () => void }) {
+export default function Message({ message, reloadFunction }: { message: UIMessage, reloadFunction: (id: string) => void }) {
     const [editState, setEditState] = useState(false)
 
     switch (message.role) {
@@ -103,7 +103,9 @@ export default function Message({ message, reloadFunction }: { message: UIMessag
                                 height={22}
                                 alt="stop"
                                 className="opacity-50 hover:opacity-100 invert duration-150 cursor-pointer"
-                                onClick={() => reloadFunction()}
+                                onClick={() => {
+                                    reloadFunction(message.id)
+                                }}
                             />
                         </Button>
                     </div>

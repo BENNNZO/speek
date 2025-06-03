@@ -1,15 +1,19 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react";
+import { generateId, appendClientMessage } from "ai";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { basic } from "@/testChats";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 import Messages from "@/components/chat/Messages";
 import Link from "next/link";
 
 export default function Home() {
+    const searchParams = useSearchParams()
+
     const [totalTokens, setTotalTokens] = useState(0)
     const [thinking, setThinking] = useState(false)
 
@@ -17,21 +21,40 @@ export default function Home() {
         setTotalTokens(prev => prev + usage)
     }
 
-    const { messages, input, handleInputChange, handleSubmit, status, reload, stop, setMessages } = useChat({
+    const { messages, input, handleInputChange, handleSubmit, status, reload, stop, setMessages, append } = useChat({
         api: "api/openai",
         onFinish: (message, { usage }) => { finishCallback(usage.totalTokens) }
     })
 
     useEffect(() => {
         setMessages(basic)
+        console.log(basic)
+        console.log(searchParams.get("id"))
     }, [])
+
+    function reloadId(id: string) {
+        messages.forEach((message, index) => {
+            if (message.id === id) {
+                const userMessage = messages[index - 1]
+                setMessages(messages.slice(0, index - 1))
+                append({ role: "user", content: userMessage.content }, { body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })
+                // setMessages(appendClientMessage({ messages: messages.slice(0, index - 1), message: userMessage }))
+            }
+        })
+    }
 
     return (
         <div className="p-12">
             {/* AI CHAT MESSAGES */}
-            <Messages messages={messages} status={status} reloadFunction={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })} />
+            <Messages
+                messages={messages}
+                status={status}
+                reloadFunction={(id: string) => reloadId(id)}
+            // reloadFunction={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
+            />
 
-            {/* BOTTOM GRADIENT */}
+            {/* BOTTOM / TOP GRADIENT */}
+            <div className="top-0 left-0 fixed bg-gradient-to-b from-black to-transparent w-full h-12"></div>
             <div className="bottom-4 left-0 fixed bg-gradient-to-t from-black to-transparent w-full h-32"></div>
             <div className="bottom-0 left-0 fixed bg-black w-full h-4"></div>
 
@@ -77,6 +100,7 @@ export default function Home() {
             <div className="top-4 left-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border-white/15 border-t rounded-2xl">
                 <Link href="/" className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer">Home</Link>
                 <div className="bg-white/15 mx-2 h-px"></div>
+                <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">ID: {searchParams.get("id")}</p>
                 <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">INPUT: {JSON.stringify(input)}</p>
                 <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">TOKENS: {totalTokens}</p>
                 <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">STATUS: {status}</p>
@@ -94,7 +118,6 @@ export default function Home() {
     );
 }
 
-// change model dropdown | or maybe just add a thinking button
 // add retry button on all messages
 // add a edit button to user messages
 // error handling

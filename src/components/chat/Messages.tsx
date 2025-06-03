@@ -2,7 +2,7 @@ import { UIMessage } from "ai"
 import Image from "next/image";
 import Message from "./Message";
 
-export default function Messages({ messages, status, reloadFunction }: { messages: UIMessage[], status: string, reloadFunction: () => void }) {
+export default function Messages({ messages, status, reloadFunction }: { messages: UIMessage[], status: string, reloadFunction: (id: string) => void }) {
 
     return (
         <div className="flex flex-col gap-8 mx-auto pb-32 max-w-4xl">

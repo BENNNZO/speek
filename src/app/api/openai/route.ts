@@ -6,7 +6,7 @@ export const maxDuration = 30
 export async function POST(req: Request) {
     const { messages, model }: { messages: Message[], model: string } = await req.json()
 
-    console.log(model)
+    if (!model) return new Response("No model provided in body of request", { status: 400 })
 
     const result = streamText({
         // gpt-4.1-nano    // $0.10/m
