@@ -1,7 +1,6 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react";
-import { generateId, appendClientMessage } from "ai";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { basic } from "@/testChats";
