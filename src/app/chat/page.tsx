@@ -4,8 +4,10 @@ import { useChat } from "@ai-sdk/react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { basic } from "@/testChats";
+import Image from "next/image";
 
 import Messages from "@/components/chat/Messages";
+import Link from "next/link";
 
 export default function Home() {
     const [totalTokens, setTotalTokens] = useState(0)
@@ -30,16 +32,23 @@ export default function Home() {
             <Messages messages={messages} status={status} reloadFunction={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })} />
 
             {/* BOTTOM GRADIENT */}
-            <div className="bottom-4 left-0 fixed bg-gradient-to-t from-zinc-900 to-transparent w-full h-32"></div>
-            <div className="bottom-0 left-0 fixed bg-zinc-900 w-full h-4"></div>
+            <div className="bottom-4 left-0 fixed bg-gradient-to-t from-black to-transparent w-full h-32"></div>
+            <div className="bottom-0 left-0 fixed bg-black w-full h-4"></div>
 
             {/* INPUT AREA */}
             <div className="bottom-8 left-1/2 fixed flex gap-2 -translate-x-1/2">
                 <motion.button
                     onClick={() => setThinking(prev => !prev)}
-                    className={`self-end ${thinking ? "bg-blue-950 border-blue-500 hover:border-blue-400 text-white" : "bg-zinc-900 border-white/15 hover:border-white/25 text-zinc-400"} px-4 py-2 border-2 rounded-full duration-150 cursor-pointer active:scale-95`}
+                    className={`self-end ${thinking ? "bg-blue-950 hover:bg-blue-900 border-blue-500 hover:border-blue-400 text-white" : "bg-zinc-900 hover:bg-zinc-800 border-white/15 hover:border-white/25 text-zinc-400"} p-1.5 aspect-square border-t rounded-full duration-150 cursor-pointer active:scale-95`}
                 >
-                    Reasoning
+                    <Image src="/add.svg" width={28} height={28} alt="reasoning" className="invert" style={{ opacity: thinking ? 1 : 0.5 }} />
+                </motion.button>
+
+                <motion.button
+                    onClick={() => setThinking(prev => !prev)}
+                    className={`self-end ${thinking ? "bg-blue-950 hover:bg-blue-900 border-blue-500 hover:border-blue-400 text-white" : "bg-zinc-900 hover:bg-zinc-800 border-white/15 hover:border-white/25 text-zinc-400"} p-2 aspect-square border-t rounded-full duration-150 cursor-pointer active:scale-95`}
+                >
+                    <Image src="/bulb.svg" width={24} height={24} alt="reasoning" className="invert" style={{ opacity: thinking ? 1 : 0.5 }} />
                 </motion.button>
 
                 <form
@@ -50,7 +59,7 @@ export default function Home() {
                             }
                         })
                     }}
-                    className="flex gap-2 bg-zinc-800 py-1.5 pr-1.5 pl-4 border-2 border-white/15 rounded-full"
+                    className="flex gap-2 bg-zinc-800 py-1.5 pr-1.5 pl-4 border-white/15 border-t rounded-full"
                 >
                     <input
                         required
@@ -65,7 +74,9 @@ export default function Home() {
             </div>
 
             {/* DEBUG INFO */}
-            <div className="top-4 left-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border border-white/15 rounded-2xl">
+            <div className="top-4 left-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border-white/15 border-t rounded-2xl">
+                <Link href="/" className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer">Home</Link>
+                <div className="bg-white/15 mx-2 h-px"></div>
                 <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">INPUT: {JSON.stringify(input)}</p>
                 <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">TOKENS: {totalTokens}</p>
                 <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">STATUS: {status}</p>

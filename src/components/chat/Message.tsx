@@ -20,7 +20,7 @@ export default function Message({ message, reloadFunction }: { message: UIMessag
                         animate={{ opacity: 1, scale: 1 }}
                         layoutId={message.id}
                     >
-                        <p className="bg-zinc-800 px-4 py-2 rounded-3xl text-zinc-200">{message.content}</p>
+                        <p className="bg-zinc-900 px-4 py-2 border-t border-t-white/15 rounded-3xl text-zinc-200">{message.content}</p>
                         <div className="top-full right-0 absolute flex justify-center items-center gap-2 opacity-0 group-hover/container:opacity-100 pt-2 duration-150">
                             <Button hoverText="Copy" delay={0}>
                                 <CopyButton content={message.content} />
