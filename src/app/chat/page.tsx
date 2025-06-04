@@ -59,9 +59,9 @@ export default function Home() {
             <Messages
                 messages={messages}
                 status={status}
+                reload={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
                 reloadFunction={(id: string) => reloadId(id)}
                 editFunction={(id: string, content: string) => editId(id, content)}
-            // reloadFunction={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
             />
 
             {/* BOTTOM / TOP GRADIENT */}
