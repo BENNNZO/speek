@@ -1,13 +1,12 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react";
-import { useState, useEffect, useRef } from "react";
-import { code } from "@/testChats";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
+import { code } from "@/testChats";
 import Link from "next/link";
-import Image from "next/image";
 
+import Gradients from "@/components/chat/Gradients";
 import Messages from "@/components/chat/Messages";
 import InputArea from "@/components/chat/InputArea";
 
@@ -66,9 +65,7 @@ export default function Home() {
             />
 
             {/* BOTTOM / TOP GRADIENT */}
-            <div className="top-0 left-0 fixed bg-gradient-to-b from-black to-transparent w-full h-12"></div>
-            <div className="bottom-4 left-0 fixed bg-gradient-to-t from-black to-transparent w-full h-32"></div>
-            <div className="bottom-0 left-0 fixed bg-black w-full h-4"></div>
+            <Gradients color="black" />
 
             {/* INPUT AREA */}
             <InputArea
