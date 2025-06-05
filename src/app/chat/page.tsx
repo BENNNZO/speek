@@ -18,6 +18,7 @@ export default function Home() {
     const [thinking, setThinking] = useState<boolean>(false)
 
     const inputRef = useRef<HTMLTextAreaElement | null>(null)
+    const fileUploadRef = useRef<HTMLInputElement | null>(null)
 
     function finishCallback(usage: number) {
         setTotalTokens(prev => prev + usage)
@@ -98,14 +99,14 @@ export default function Home() {
                     value={input}
                     rows={1}
                     autoFocus
-                    className="hover:bg-zinc-700 focus:bg-zinc-600 px-1.5 hover:px-3 focus:px-3 py-1 rounded-2xl outline-none w-xl duration-150 resize-none"
+                    className="hover:bg-zinc-700 focus:bg-zinc-600 px-1.5 hover:px-3 focus:px-3 py-2 rounded-3xl outline-none w-xl duration-150 resize-none"
                     placeholder="Ask Anything..."
                     onChange={(event) => setInput(event.target.value)}
                     onKeyDown={(event) => handleKeyDown(event)}
                 />
                 <div className="flex justify-between">
                     <div className="flex gap-2">
-                        <button className="bg-zinc-600 rounded-full size-[32px]">
+                        <button className="bg-zinc-600 rounded-full size-[40px]">
                             <Image
                                 src="/add.svg"
                                 width={28}
@@ -114,18 +115,33 @@ export default function Home() {
                                 className="invert m-auto"
                             />
                         </button>
-                        <button className="bg-zinc-600 rounded-full size-[32px]">
-                            <Image
-                                src="/attach.svg"
-                                width={28}
-                                height={28}
-                                alt="attach"
-                                className="invert m-auto rotate-45"
+                        <div className="flex">
+                            <input
+                                ref={fileUploadRef}
+                                multiple
+                                type="file"
+                                className="hidden"
+                                data-cnp-create-listener="true"
+                                accept="image/jpeg,.jpeg,.jpg,image/png,.png,image/webp,.webp,text/plain,.txt,.eml,.xml,text/html,.html,text/markdown,.md,text/csv,.csv,text/tab-separated-values,.tsv,application/rtf,.rtf,application/pdf,.pdf,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,application/vnd.ms-powerpoint,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx,application/vnd.oasis.opendocument.text,.odt,application/epub+zip,.epub,application/vnd.ms-excel,.xlsx,application/vnd.ms-outlook,.msg,text/x-rst,.rst"
                             />
-                        </button>
+                            <button
+                                className="bg-zinc-600 rounded-full size-[40px]"
+                                onClick={() => {
+                                    fileUploadRef.current?.click()
+                                }}
+                            >
+                                <Image
+                                    src="/attach.svg"
+                                    width={28}
+                                    height={28}
+                                    alt="attach"
+                                    className="invert m-auto rotate-45"
+                                />
+                            </button>
+                        </div>
                         <button
                             onClick={() => setThinking(prev => !prev)}
-                            className={`flex items-center gap-1 pr-3 pl-1.5 rounded-full cursor-pointer ${thinking ? "bg-blue-600" : "bg-zinc-600 text-zinc-400"} duration-150`}
+                            className={`flex items-center gap-1 pr-4 pl-2 rounded-full cursor-pointer ${thinking ? "bg-blue-600" : "bg-zinc-600 text-zinc-400"} duration-150`}
                         >
                             <Image
                                 src="/bulb.svg"
@@ -137,11 +153,11 @@ export default function Home() {
                             <p>Reason</p>
                         </button>
                     </div>
-                    <button className="bg-zinc-600 rounded-full size-[32px]">
+                    <button className="bg-zinc-600 rounded-full size-[40px]">
                         <Image
                             src="/arrow-up.svg"
-                            width={28}
-                            height={28}
+                            width={32}
+                            height={32}
                             alt="submit"
                             className="invert m-auto p-1"
                         />
@@ -156,7 +172,7 @@ export default function Home() {
 
     function DebugInfo() {
         return (
-            <div className="top-4 left-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border-white/15 border-t rounded-2xl">
+            <div className="top-4 right-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border-white/15 border-t rounded-2xl">
                 <Link href="/" className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer">Home</Link>
                 <div className="bg-white/15 mx-2 h-px"></div>
                 <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">ID: {searchParams.get("id")}</p>
