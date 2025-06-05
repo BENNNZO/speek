@@ -92,19 +92,20 @@ export default function Home() {
             <div className="bottom-0 left-0 fixed bg-black w-full h-4"></div>
 
             {/* INPUT AREA */}
-            <div className="bottom-4 left-1/2 fixed flex flex-col gap-2 bg-zinc-900 p-2 border-t border-t-white/20 rounded-3xl -translate-x-1/2">
+            <div className="bottom-4 left-1/2 fixed flex flex-col gap-2 bg-zinc-800 p-2 rounded-3xl -translate-x-1/2 bo/20">
                 <textarea
                     ref={inputRef}
                     value={input}
                     rows={1}
-                    className="hover:bg-zinc-800 focus:bg-zinc-700 px-1 focus:px-3 py-1 rounded-2xl outline-none w-lg duration-150 resize-none"
+                    autoFocus
+                    className="hover:bg-zinc-700 focus:bg-zinc-600 px-1 focus:px-3 py-1 rounded-2xl outline-none w-xl duration-150 resize-none"
                     placeholder="Ask Anything..."
                     onChange={(event) => setInput(event.target.value)}
                     onKeyDown={(event) => handleKeyDown(event)}
                 />
                 <div className="flex justify-between">
                     <div className="flex gap-2">
-                        <button className="bg-zinc-600 border-t border-t-white/25 rounded-full size-[32px]">
+                        <button className="bg-zinc-600 rounded-full size-[32px]">
                             <Image
                                 src="/add.svg"
                                 width={28}
@@ -113,7 +114,7 @@ export default function Home() {
                                 className="invert m-auto"
                             />
                         </button>
-                        <button className="bg-zinc-600 border-t border-t-white/25 rounded-full size-[32px]">
+                        <button className="bg-zinc-600 rounded-full size-[32px]">
                             <Image
                                 src="/attach.svg"
                                 width={28}
@@ -122,11 +123,11 @@ export default function Home() {
                                 className="invert m-auto rotate-45"
                             />
                         </button>
-                        <button className="bg-zinc-600 px-3 border-t border-t-white/25 rounded-full">
+                        <button className="bg-zinc-600 px-3 rounded-full">
                             Reason
                         </button>
                     </div>
-                    <button className="bg-zinc-600 border-t border-t-white/25 rounded-full size-[32px]">
+                    <button className="bg-zinc-600 rounded-full size-[32px]">
                         <Image
                             src="/arrow-up.svg"
                             width={28}

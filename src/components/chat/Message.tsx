@@ -21,7 +21,7 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                         className="group/container"
                         layoutId={message.id}
                     >
-                        <p className="bg-zinc-900 px-4 py-2 border-t border-t-white/15 rounded-3xl text-zinc-200">{message.content}</p>
+                        <p className="bg-zinc-700 px-4 py-2 rounded-3xl text-zinc-200">{message.content}</p>
                         <div className="top-full right-0 absolute flex justify-center items-center gap-2 opacity-0 group-hover/container:opacity-100 pt-2 duration-150">
                             <Button hoverText="Copy" delay={0}>
                                 <CopyButton content={message.content} />
@@ -52,17 +52,17 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                                     onClick={(e) => e.stopPropagation()}
                                     layoutId={message.id}
                                 >
-                                    <div className="flex flex-col bg-zinc-800 border-t border-t-white/15 rounded-3xl w-xl h-74">
+                                    <div className="flex flex-col bg-zinc-800 rounded-3xl w-xl h-74">
                                         <textarea autoFocus placeholder="editing..." className="mx-5 mt-4 mb-2 focus:outline-none h-full resize-none edit-scrollbar" value={editContent} onChange={(e) => setEditContent(e.target.value)} />
                                         <div className="flex justify-end gap-2 p-3">
                                             <button
-                                                className="bg-zinc-900 hover:bg-zinc-950 px-3 py-1 border-t border-t-white/15 rounded-full duration-150 cursor-pointer"
+                                                className="bg-zinc-900 hover:bg-zinc-950 px-3 py-1 rounded-full duration-150 cursor-pointer"
                                                 onClick={() => setEditState(false)}
                                             >
                                                 Close
                                             </button>
                                             <button
-                                                className="bg-zinc-200 hover:bg-white px-3 py-1 border-t border-t-white/15 rounded-full text-zinc-950 duration-150 cursor-pointer"
+                                                className="bg-zinc-200 hover:bg-white px-3 py-1 rounded-full text-zinc-950 duration-150 cursor-pointer"
                                                 onClick={() => editFunction(message.id, editContent)}
                                             >
                                                 Send
@@ -96,7 +96,7 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                                             const match = /language-(\w+)/.exec(className || "")
 
                                             return match ? (
-                                                <div className="bg-zinc-700 border border-zinc-700 rounded-xl overflow-hidden">
+                                                <div className="bg-zinc-700 border-2 border-zinc-700 rounded-xl overflow-hidden">
                                                     <div className="flex justify-between px-3 py-2 h-10 not-prose">
                                                         <p className="text-base not-prose">{match[1]}</p>
                                                         <CopyButton content={String(children)} />
@@ -105,7 +105,12 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                                                         {...rest}
                                                         language={match[1]}
                                                         style={vscDarkPlus}
-                                                        customStyle={{ margin: 0, borderRadius: 0, borderTop: "1px", borderColor: "rgba(255, 255, 255, 0.15)" }}
+                                                        customStyle={{
+                                                            margin: 0,
+                                                            borderRadius: 0,
+                                                            borderTop: "1px",
+                                                            borderColor: "rgba(255, 255, 255, 0.15)"
+                                                        }}
                                                     >
                                                         {String(children)}
                                                     </SyntaxHighlighter>
