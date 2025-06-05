@@ -6,6 +6,8 @@ import { UIMessage } from "ai"
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export default function Message({ message, reloadFunction, editFunction }: { message: UIMessage, reloadFunction: (id: string) => void, editFunction: (id: string, content: string) => void }) {
     const [editState, setEditState] = useState(false)
@@ -79,7 +81,49 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                     {message.parts.map((part, index) => (
                         part.type === "text" && (
                             <div key={index} className="prose-invert prose prose-zinc">
-                                <Markdown remarkPlugins={[remarkGfm]}>{part.text}</Markdown>
+                                <Markdown
+                                    remarkPlugins={[remarkGfm]}
+                                    components={{
+                                        pre(props) {
+                                            const { children } = props
+
+                                            console.log(props)
+
+                                            return (
+                                                <pre className="p-0">
+                                                    {children}
+                                                </pre>
+                                            )
+                                        },
+                                        code(props) {
+                                            const { children, className, node, ref, ...rest } = props
+                                            const match = /language-(\w+)/.exec(className || "")
+
+                                            return match ? (
+                                                <div className="bg-zinc-700 border border-zinc-700 rounded-xl overflow-hidden">
+                                                    <p className="py-2 pl-3 text-base not-prose">{match[1]}</p>
+                                                    <SyntaxHighlighter
+                                                        {...rest}
+                                                        language={match[1]}
+                                                        style={vscDarkPlus}
+                                                        customStyle={{ margin: 0, borderRadius: 0, borderTop: "1px", borderColor: "rgba(255, 255, 255, 0.15)" }}
+                                                    >
+                                                        {String(children)}
+                                                    </SyntaxHighlighter>
+                                                </div>
+                                            ) : (
+                                                <div className="bg-zinc-700 border border-zinc-700 rounded-xl overflow-hidden">
+                                                    <p className="pt-2 pl-3 text-base not-prose">Unknown Language</p>
+                                                    <code {...rest} className={className}>
+                                                        {children}
+                                                    </code>
+                                                </div>
+                                            )
+                                        }
+                                    }}
+                                >
+                                    {part.text}
+                                </Markdown>
                             </div>
                         )
                     ))}

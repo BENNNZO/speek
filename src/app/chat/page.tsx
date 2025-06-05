@@ -2,7 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { useState, useEffect, useRef } from "react";
-import { basic } from "@/testChats";
+import { code } from "@/testChats";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -29,7 +29,7 @@ export default function Home() {
     })
 
     useEffect(() => {
-        setMessages(basic)
+        setMessages(code)
         // console.log(basic)
         // console.log(searchParams.get("id"))
     }, [])
