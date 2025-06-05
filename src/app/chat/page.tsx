@@ -6,8 +6,9 @@ import { useSearchParams } from "next/navigation";
 import { code } from "@/testChats";
 import Link from "next/link";
 
-import Gradients from "@/components/chat/Gradients";
+import SideBar from "@/components/chat/SideBar";
 import Messages from "@/components/chat/Messages";
+import Gradients from "@/components/chat/Gradients";
 import InputArea from "@/components/chat/InputArea";
 
 export default function Home() {
@@ -54,7 +55,7 @@ export default function Home() {
 
     return (
         <div className="p-12">
-
+            <SideBar />
             {/* AI CHAT MESSAGES */}
             <Messages
                 messages={messages}
@@ -80,6 +81,22 @@ export default function Home() {
             <DebugInfo />
         </div>
     );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     function DebugInfo() {
         return (
