@@ -1,10 +1,11 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { basic } from "@/testChats";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 import Messages from "@/components/chat/Messages";
 import InputArea from "@/components/chat/InputArea";
@@ -15,20 +16,40 @@ export default function Home() {
     const [totalTokens, setTotalTokens] = useState<number>(0)
     const [thinking, setThinking] = useState<boolean>(false)
 
+    const inputRef = useRef<HTMLTextAreaElement | null>(null)
+
     function finishCallback(usage: number) {
         setTotalTokens(prev => prev + usage)
     }
 
-    const { messages, input, handleInputChange, handleSubmit, status, reload, stop, setMessages, append } = useChat({
+    const { messages, input, setInput, handleInputChange, handleSubmit, status, reload, stop, setMessages, append } = useChat({
         api: "api/openai",
         onFinish: (message, { usage }) => { finishCallback(usage.totalTokens) }
     })
 
     useEffect(() => {
         setMessages(basic)
-        console.log(basic)
-        console.log(searchParams.get("id"))
+        // console.log(basic)
+        // console.log(searchParams.get("id"))
     }, [])
+
+    useEffect(() => {
+        const inputElement = inputRef.current
+        if (inputElement) {
+            inputElement.style.height = "auto"
+            inputElement.style.height = inputElement.scrollHeight + "px"
+        }
+    }, [input])
+
+    function handleKeyDown(event: React.KeyboardEvent) {
+        if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault()
+            if (input.trim()) {
+                console.log("submit", input)
+                // append({ role: "user", content: input })
+            }
+        }
+    }
 
     // function for reload button on each assistant message
     function reloadId(id: string) {
@@ -54,10 +75,6 @@ export default function Home() {
 
     return (
         <div className="p-12">
-            {/* BOTTOM / TOP GRADIENT */}
-            <div className="top-0 left-0 fixed bg-gradient-to-b from-black to-transparent w-full h-12"></div>
-            <div className="bottom-4 left-0 fixed bg-gradient-to-t from-black to-transparent w-full h-32"></div>
-            <div className="bottom-0 left-0 fixed bg-black w-full h-4"></div>
 
             {/* AI CHAT MESSAGES */}
             <Messages
@@ -68,14 +85,66 @@ export default function Home() {
                 editFunction={(id: string, content: string) => editId(id, content)}
             />
 
+            {/* BOTTOM / TOP GRADIENT */}
+            <div className="top-0 left-0 fixed bg-gradient-to-b from-black to-transparent w-full h-12"></div>
+            <div className="bottom-4 left-0 fixed bg-gradient-to-t from-black to-transparent w-full h-32"></div>
+            <div className="bottom-0 left-0 fixed bg-black w-full h-4"></div>
+
             {/* INPUT AREA */}
-            <InputArea
+            <div className="bottom-4 left-1/2 fixed flex flex-col gap-2 bg-zinc-800 p-2 border-t border-t-white/15 rounded-3xl -translate-x-1/2">
+                <div className="flex items-start gap-2">
+                    <textarea
+                        ref={inputRef}
+                        value={input}
+                        rows={1}
+                        className="focus:bg-zinc-700 px-1 focus:px-3 py-1 rounded-2xl outline-none w-lg duration-150 resize-none"
+                        placeholder="Ask Anything..."
+                        onChange={(event) => setInput(event.target.value)}
+                        onKeyDown={(event) => handleKeyDown(event)}
+                    />
+                </div>
+                <div className="flex justify-between">
+                    <div className="flex gap-2">
+                        <button className="bg-zinc-600 border-t border-t-white/15 rounded-full size-[32px]">
+                            <Image
+                                src="/add.svg"
+                                width={28}
+                                height={28}
+                                alt="new chat"
+                                className="invert m-auto"
+                            />
+                        </button>
+                        <button className="bg-zinc-600 border-t border-t-white/15 rounded-full size-[32px]">
+                            <Image
+                                src="/attach.svg"
+                                width={28}
+                                height={28}
+                                alt="attach"
+                                className="invert m-auto rotate-45"
+                            />
+                        </button>
+                        <button className="bg-zinc-600 px-3 border-t border-t-white/15 rounded-full">
+                            Reason
+                        </button>
+                    </div>
+                    <button className="bg-zinc-600 border-t border-t-white/15 rounded-full size-[32px]">
+                        <Image
+                            src="/paper-plane.svg"
+                            width={28}
+                            height={28}
+                            alt="submit"
+                            className="invert m-auto p-1"
+                        />
+                    </button>
+                </div>
+            </div>
+            {/* <InputArea
                 input={input}
                 thinking={thinking}
                 setThinking={setThinking}
                 handleInputChange={handleInputChange}
                 handleSubmit={handleSubmit}
-            />
+            /> */}
 
             {/* DEBUG INFO */}
             <DebugInfo />
@@ -107,7 +176,7 @@ export default function Home() {
 
 // [ x ] add retry button on all messages
 // [ x ] add a edit button to user messages
-// [  ] error handling
+// [ x ] error handling
 // [  ] make the input box get taller as more content is added
 // [  ] add support for images
 // [  ] add support for multiple chats
