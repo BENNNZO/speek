@@ -42,7 +42,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 value={input}
                 rows={1}
                 autoFocus
-                className="hover:bg-zinc-700 focus:bg-zinc-600 px-1.5 hover:px-3 focus:px-3 py-2 rounded-3xl outline-none w-xl duration-150 resize-none"
+                className="hover:bg-zinc-700 focus:bg-zinc-600 px-1.5 hover:px-3 focus:px-3 py-2 rounded-3xl outline-none w-2xl duration-150 resize-none"
                 placeholder="Ask Anything..."
                 onChange={(event) => setInput(event.target.value)}
                 onKeyDown={(event) => handleKeyDown(event)}
