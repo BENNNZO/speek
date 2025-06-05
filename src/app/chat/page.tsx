@@ -123,13 +123,16 @@ export default function Home() {
                                 className="invert m-auto rotate-45"
                             />
                         </button>
-                        <button className="flex items-center gap-1 bg-zinc-600 pr-3 pl-1.5 rounded-full">
+                        <button
+                            onClick={() => setThinking(prev => !prev)}
+                            className={`flex items-center gap-1 pr-3 pl-1.5 rounded-full cursor-pointer ${thinking ? "bg-blue-600" : "bg-zinc-600 text-zinc-400"} duration-150`}
+                        >
                             <Image
                                 src="/bulb.svg"
                                 width={28}
                                 height={28}
                                 alt="submit"
-                                className="invert m-auto p-1"
+                                className={`invert m-auto p-1 ${thinking ? "opacity-100" : "opacity-50"} duration-300`}
                             />
                             <p>Reason</p>
                         </button>
