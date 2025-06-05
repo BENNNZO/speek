@@ -84,13 +84,23 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                                 <Markdown
                                     remarkPlugins={[remarkGfm]}
                                     components={{
+                                        pre(props) {
+                                            return (
+                                                <pre className="p-0">
+                                                    {props.children}
+                                                </pre>
+                                            )
+                                        },
                                         code(props) {
                                             const { children, className, node, ref, ...rest } = props
                                             const match = /language-(\w+)/.exec(className || "")
 
                                             return match ? (
                                                 <div className="bg-zinc-700 border border-zinc-700 rounded-xl overflow-hidden">
-                                                    <p className="py-2 pl-3 text-base not-prose">{match[1]}</p>
+                                                    <div className="flex justify-between px-3 py-2 h-10 not-prose">
+                                                        <p className="text-base not-prose">{match[1]}</p>
+                                                        <CopyButton content={String(children)} />
+                                                    </div>
                                                     <SyntaxHighlighter
                                                         {...rest}
                                                         language={match[1]}
