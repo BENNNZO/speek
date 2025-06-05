@@ -98,7 +98,7 @@ export default function Home() {
                     value={input}
                     rows={1}
                     autoFocus
-                    className="hover:bg-zinc-700 focus:bg-zinc-600 px-1 focus:px-3 py-1 rounded-2xl outline-none w-xl duration-150 resize-none"
+                    className="hover:bg-zinc-700 focus:bg-zinc-600 px-1.5 hover:px-3 focus:px-3 py-1 rounded-2xl outline-none w-xl duration-150 resize-none"
                     placeholder="Ask Anything..."
                     onChange={(event) => setInput(event.target.value)}
                     onKeyDown={(event) => handleKeyDown(event)}
@@ -123,8 +123,15 @@ export default function Home() {
                                 className="invert m-auto rotate-45"
                             />
                         </button>
-                        <button className="bg-zinc-600 px-3 rounded-full">
-                            Reason
+                        <button className="flex items-center gap-1 bg-zinc-600 pr-3 pl-1.5 rounded-full">
+                            <Image
+                                src="/bulb.svg"
+                                width={28}
+                                height={28}
+                                alt="submit"
+                                className="invert m-auto p-1"
+                            />
+                            <p>Reason</p>
                         </button>
                     </div>
                     <button className="bg-zinc-600 rounded-full size-[32px]">
