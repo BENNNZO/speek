@@ -84,17 +84,6 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                                 <Markdown
                                     remarkPlugins={[remarkGfm]}
                                     components={{
-                                        pre(props) {
-                                            const { children } = props
-
-                                            console.log(props)
-
-                                            return (
-                                                <pre className="p-0">
-                                                    {children}
-                                                </pre>
-                                            )
-                                        },
                                         code(props) {
                                             const { children, className, node, ref, ...rest } = props
                                             const match = /language-(\w+)/.exec(className || "")
@@ -112,12 +101,9 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                                                     </SyntaxHighlighter>
                                                 </div>
                                             ) : (
-                                                <div className="bg-zinc-700 border border-zinc-700 rounded-xl overflow-hidden">
-                                                    <p className="pt-2 pl-3 text-base not-prose">Unknown Language</p>
-                                                    <code {...rest} className={className}>
-                                                        {children}
-                                                    </code>
-                                                </div>
+                                                <code {...rest} className="bg-zinc-600 px-1.5 py-0.5 rounded-md font-semibold text-white not-prose">
+                                                    {children}
+                                                </code>
                                             )
                                         }
                                     }}
