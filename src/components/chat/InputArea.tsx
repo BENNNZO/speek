@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Message, CreateMessage, ChatRequestOptions } from "ai"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
@@ -24,7 +24,9 @@ const animationProps = {
 
 export default function InputArea({ thinking, setThinking, input, setInput, append, status, stop, reload }: Props) {
     const inputRef = useRef<HTMLTextAreaElement | null>(null)
-    const fileUploadRef = useRef<HTMLInputElement | null>(null)
+    const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+    const [files, setFiles] = useState<FileList | undefined>(undefined)
 
     useEffect(() => {
         const inputElement = inputRef.current
@@ -37,7 +39,13 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
     function handleSubmit() {
         if (input.trim()) {
             setInput("")
-            append({ role: "user", content: input }, { body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })
+            append({ role: "user", content: input }, { body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" }, experimental_attachments: files })
+
+            setFiles(undefined);
+
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
         }
     }
 
@@ -61,11 +69,16 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 onKeyDown={(event) => handleKeyDown(event)}
             />
             <input
-                ref={fileUploadRef}
+                ref={fileInputRef}
                 multiple
                 type="file"
                 className="hidden"
                 data-cnp-create-listener="true"
+                onChange={event => {
+                    if (event.target.files) {
+                        setFiles(event.target.files);
+                    }
+                }}
                 accept="image/jpeg,.jpeg,.jpg,image/png,.png,image/webp,.webp,text/plain,.txt,.eml,.xml,text/html,.html,text/markdown,.md,text/csv,.csv,text/tab-separated-values,.tsv,application/rtf,.rtf,application/pdf,.pdf,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,application/vnd.ms-powerpoint,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx,application/vnd.oasis.opendocument.text,.odt,application/epub+zip,.epub,application/vnd.ms-excel,.xlsx,application/vnd.ms-outlook,.msg,text/x-rst,.rst"
             />
             <div className="flex justify-between">
@@ -82,7 +95,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                     <button
                         className="bg-zinc-600 rounded-full size-[40px]"
                         onClick={() => {
-                            fileUploadRef.current?.click()
+                            fileInputRef.current?.click()
                         }}
                     >
                         <Image
