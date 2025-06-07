@@ -14,6 +14,7 @@ interface Props {
     append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>
     reload: () => void
     stop: () => void
+    id: string
 }
 
 // Animation settings for framer-motion on dynamic action button
@@ -23,7 +24,7 @@ const animationProps = {
     exit: { opacity: 0, scale: 0.75, transition: { duration: 0.1 } }
 }
 
-export default function InputArea({ thinking, setThinking, input, setInput, append, status, stop, reload }: Props) {
+export default function InputArea({ thinking, setThinking, input, setInput, append, status, stop, reload, id }: Props) {
     // Refs for textarea and file input
     const inputRef = useRef<HTMLTextAreaElement | null>(null)
     const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -99,7 +100,11 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                     content: input
                 },
                 {
-                    body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" },
+                    body: {
+                        model: thinking ? "o4-mini" : "gpt-4.1-nano",
+                        prompt: input,
+                        id
+                    },
                     experimental_attachments: getFileListForSubmit()
                 }
             )

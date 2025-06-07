@@ -3,6 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,13 +17,11 @@ export default function ClientContainer() {
     const [totalTokens, setTotalTokens] = useState<number>(0)
     const [sidebar, setSidebar] = useState<boolean>(true)
 
-    function finishCallback(usage: number) {
-        setTotalTokens(prev => prev + usage)
-    }
-
-    const { messages, input, setInput, status, reload, stop, setMessages, append } = useChat({
+    const { messages, input, setInput, status, reload, stop, setMessages, append, id } = useChat({
         api: "api/openai",
-        onFinish: (message, { usage }) => { finishCallback(usage.totalTokens) }
+        onFinish: (message, { usage }) => {
+            setTotalTokens(prev => prev + usage.totalTokens)
+        }
     })
 
     useEffect(() => {
@@ -88,6 +87,7 @@ export default function ClientContainer() {
                     append={append}
                     reload={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
                     stop={stop}
+                    id={id}
                 />
             </div>
             <DebugInfo />
