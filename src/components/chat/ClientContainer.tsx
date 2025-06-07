@@ -4,6 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,7 +12,6 @@ import SideBar from "@/components/chat/SideBar";
 import Messages from "@/components/chat/Messages";
 import Gradients from "@/components/chat/Gradients";
 import InputArea from "@/components/chat/InputArea";
-import axios from "axios";
 
 export default function ClientContainer() {
     const searchParams = useSearchParams()
@@ -92,7 +92,7 @@ export default function ClientContainer() {
                     append={append}
                     reload={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
                     stop={stop}
-                    id={id}
+                    id={searchParams.get("id") || id}
                 />
             </div>
             <DebugInfo />

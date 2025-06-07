@@ -11,8 +11,7 @@ export async function POST(req: Request) {
     if (!session?.user) return new NextResponse("Unauthorized", { status: 400 })
 
     const { messages, model, prompt, id }: { messages: Message[], model: string, prompt: string, id: string } = await req.json()
-
-    if (!model) return new Response("No model provided in body of request", { status: 400 })
+    if (!model) return new NextResponse("No model provided in body of request", { status: 400 })
 
     const result = streamText({
         model: openai(model),
