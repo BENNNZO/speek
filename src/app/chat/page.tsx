@@ -7,7 +7,7 @@ export default async function ChatPage() {
 
     if (!session?.user) redirect("/")
 
-    if (session.user) return (
+    return (
         <ClientContainer />
     )
 }

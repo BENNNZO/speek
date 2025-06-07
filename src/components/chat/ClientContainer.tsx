@@ -2,9 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { code } from "@/testChats";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,8 +12,6 @@ import Gradients from "@/components/chat/Gradients";
 import InputArea from "@/components/chat/InputArea";
 
 export default function ClientContainer() {
-    const searchParams = useSearchParams()
-
     const [thinking, setThinking] = useState<boolean>(false)
     const [totalTokens, setTotalTokens] = useState<number>(0)
     const [sidebar, setSidebar] = useState<boolean>(true)
@@ -30,7 +26,7 @@ export default function ClientContainer() {
     })
 
     useEffect(() => {
-        setMessages(code)
+        // setMessages(code)
     }, [])
 
     // function for reload button on each assistant message
@@ -119,7 +115,6 @@ export default function ClientContainer() {
             <div className="right-4 bottom-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border-white/15 border-t rounded-2xl">
                 <Link href="/" className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer">Home</Link>
                 <div className="bg-white/15 mx-2 h-px"></div>
-                <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">ID: {searchParams.get("id")}</p>
                 <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">INPUT: {JSON.stringify(input)}</p>
                 <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">TOKENS: {totalTokens}</p>
                 <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">STATUS: {status}</p>
