@@ -13,7 +13,7 @@ import Messages from "@/components/chat/Messages";
 import Gradients from "@/components/chat/Gradients";
 import InputArea from "@/components/chat/InputArea";
 
-export default function Home() {
+export default function ChatPage() {
     const searchParams = useSearchParams()
 
     const [thinking, setThinking] = useState<boolean>(false)
