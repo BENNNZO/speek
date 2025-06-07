@@ -54,30 +54,27 @@ export default function Home() {
     }
 
     return (
-        <div className="p-12">
+        <div className="grid grid-cols-[18rem_1fr]">
             <SideBar />
-            {/* AI CHAT MESSAGES */}
-            <Messages
-                messages={messages}
-                status={status}
-                reload={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
-                reloadFunction={(id: string) => reloadId(id)}
-                editFunction={(id: string, content: string) => editId(id, content)}
-            />
 
-            {/* BOTTOM / TOP GRADIENT */}
-            <Gradients color="black" />
+            <div className="relative w-full">
+                <Messages
+                    messages={messages}
+                    status={status}
+                    reload={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
+                    reloadFunction={(id: string) => reloadId(id)}
+                    editFunction={(id: string, content: string) => editId(id, content)}
+                />
+                <Gradients color="black" />
+                <InputArea
+                    input={input}
+                    thinking={thinking}
+                    setThinking={setThinking}
+                    setInput={setInput}
+                    append={append}
+                />
+            </div>
 
-            {/* INPUT AREA */}
-            <InputArea
-                input={input}
-                thinking={thinking}
-                setThinking={setThinking}
-                setInput={setInput}
-                append={append}
-            />
-
-            {/* DEBUG INFO */}
             <DebugInfo />
         </div>
     );

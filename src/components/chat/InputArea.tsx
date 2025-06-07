@@ -36,7 +36,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
         }
     }
     return (
-        <div className="bottom-4 left-1/2 fixed flex flex-col gap-2 bg-zinc-800 p-2 rounded-3xl -translate-x-1/2 bo/20">
+        <div className="bottom-4 left-1/2 absolute flex flex-col gap-2 bg-zinc-800 p-2 rounded-3xl -translate-x-1/2 pointer-events-auto bo/20">
             <textarea
                 ref={inputRef}
                 value={input}
