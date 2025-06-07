@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import Link from "next/link"
 
-export default function SideBar({ state }: { state: boolean }) {
+export default function SideBar({ state, setLoading }: { state: boolean, setLoading: (state: boolean) => void }) {
     const [chats, setChats] = useState<string[]>([])
 
     useEffect(() => {
@@ -28,7 +28,7 @@ export default function SideBar({ state }: { state: boolean }) {
                 <div className="flex flex-col gap-2 mt-4 p-1.5">
                     <p className="opacity-50 pt-2 pl-1.5">Chats</p>
                     {chats.map((chat, index) => (
-                        <Link key={index} href={`chat?id=${chat}`} className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">{chat}</Link>
+                        <Link key={index} href={`chat?id=${chat}`} className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis" onClick={() => setLoading(true)}>{chat}</Link>
                     ))}
                 </div>
             </div>

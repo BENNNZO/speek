@@ -19,12 +19,21 @@ export default function ClientContainer() {
     const [thinking, setThinking] = useState<boolean>(false)
     const [totalTokens, setTotalTokens] = useState<number>(0)
     const [sidebar, setSidebar] = useState<boolean>(true)
+    const [loadingMessages, setLoadingMessages] = useState<boolean>(false)
 
     useEffect(() => {
-        axios.get(`/api/user/chat/messages/${searchParams.get("id")}`)
-            .then(res => setMessages(res.data))
-            .catch(err => console.log(err))
-    }, [])
+        if (searchParams.get("id")) {
+            setMessages([])
+            setLoadingMessages(true)
+
+            axios.get(`/api/user/chat/messages/${searchParams.get("id")}`)
+                .then(res => {
+                    setMessages(res.data)
+                    setLoadingMessages(false)
+                })
+                .catch(err => console.log(err))
+        }
+    }, [searchParams])
 
     const { messages, input, setInput, status, reload, stop, setMessages, append, id } = useChat({
         api: "api/openai",
@@ -61,7 +70,7 @@ export default function ClientContainer() {
             animate={{ gridTemplateColumns: sidebar ? "18rem 1fr" : "0rem 1fr" }}
             className="grid h-screen"
         >
-            <SideBar state={sidebar} />
+            <SideBar state={sidebar} setLoading={setLoadingMessages} />
             <div className="relative w-full">
                 <button
                     className="top-4 left-4 z-50 absolute bg-zinc-800 hover:bg-zinc-700 p-2 rounded-full duration-150 cursor-pointer"
@@ -81,6 +90,7 @@ export default function ClientContainer() {
                     reload={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
                     reloadFunction={reloadId}
                     editFunction={editId}
+                    loading={loadingMessages}
                 />
                 <Gradients color="black" />
                 <InputArea

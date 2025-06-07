@@ -9,10 +9,11 @@ interface Props {
     status: string,
     reload: () => void,
     reloadFunction: (id: string) => void,
-    editFunction: (id: string, content: string) => void
+    editFunction: (id: string, content: string) => void,
+    loading: boolean
 }
 
-export default function Messages({ messages, status, reload, reloadFunction, editFunction }: Props) {
+export default function Messages({ messages, status, reload, reloadFunction, editFunction, loading }: Props) {
     return (
         <div className="w-full max-h-screen overflow-x-hidden overflow-y-auto custom-scrollbar">
             <div className="flex flex-col gap-8 mx-auto pt-12 pb-44 max-w-4xl">
@@ -32,6 +33,13 @@ export default function Messages({ messages, status, reload, reloadFunction, edi
                             <p>Retry</p>
                             <Image src="/refresh.svg" width={20} height={20} alt="refresh icon" className="invert" />
                         </button>
+                    </div>
+                }
+
+                {/* LOADING MESSAGES */}
+                {loading &&
+                    <div className="top-0 left-0 absolute place-items-center grid bg-black w-full h-screen">
+                        <Image src="/loader.svg" width={35} height={35} alt="loader" />
                     </div>
                 }
             </div>
