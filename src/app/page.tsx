@@ -13,3 +13,7 @@ export default function Home() {
 		</div>
 	);
 }
+
+// auth
+// db
+// prisma orm
