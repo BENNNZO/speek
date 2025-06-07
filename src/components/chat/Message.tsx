@@ -95,6 +95,10 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                                             const { children, className, node, ref, ...rest } = props
                                             const match = /language-(\w+)/.exec(className || "")
 
+                                            // we need to extract these cause they cant be put in the SyntaxHighlighter
+                                            const fixBuildError1 = node //Error: 'node' is assigned a value but never used.
+                                            const fixBuildError2 = ref  //Error: 'ref'  is assigned a value but never used.
+
                                             return match ? (
                                                 <div className="bg-zinc-700 border-2 border-zinc-700 rounded-xl overflow-hidden">
                                                     <div className="flex justify-between px-3 py-2 h-10 not-prose">
