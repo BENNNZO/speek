@@ -26,7 +26,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
     const inputRef = useRef<HTMLTextAreaElement | null>(null)
     const fileInputRef = useRef<HTMLInputElement | null>(null)
 
-    const [files, setFiles] = useState<FileList | undefined>(undefined)
+    const [files, setFiles] = useState<{ id: string, file: File }[] | undefined>(undefined)
 
     useEffect(() => {
         const inputElement = inputRef.current
@@ -41,23 +41,20 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
             const clipboardItems = event.clipboardData?.items;
             if (!clipboardItems) return;
 
-            const dt = new DataTransfer();
-            if (files) {
-                for (let i = 0; i < files.length; i++) dt.items.add(files[i])
-            }
+            const newFiles = [...files ?? []];
 
             for (const item of clipboardItems) {
                 if (item.type.startsWith("image/")) {
-                    const blob = item.getAsFile()
+                    const blob = item.getAsFile();
                     if (blob) {
-                        const file = new File([blob], "pasted-image", { type: blob.type })
-                        dt.items.add(file)
+                        const file = new File([blob], "pasted-image", { type: blob.type });
+                        newFiles.push({ id: crypto.randomUUID(), file });
                     }
                 }
             }
 
-            if (dt.files.length > (files?.length || 0)) {
-                setFiles(dt.files)
+            if (newFiles.length > (files?.length || 0)) {
+                setFiles(newFiles);
             }
         }
 
@@ -69,18 +66,24 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
     function handleAttachmentDelete(index: number) {
         if (!files) return
 
-        const dt = new DataTransfer()
-        Array.from(files).forEach((file, fileIndex) => {
-            if (index !== fileIndex) dt.items.add(file)
+        setFiles(prev => {
+            if (prev) return prev.filter((_, fileIndex) => index !== fileIndex)
         })
-
-        setFiles(dt.files)
     }
 
     function handleSubmit() {
         if (input.trim()) {
             setInput("")
-            append({ role: "user", content: input }, { body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" }, experimental_attachments: files })
+            append(
+                {
+                    role: "user",
+                    content: input
+                },
+                {
+                    body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" },
+                    experimental_attachments: files?.map(({ file }) => ({ file, url: URL.createObjectURL(file) }))
+                }
+            )
 
             setFiles(undefined);
 
@@ -117,43 +120,49 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 data-cnp-create-listener="true"
                 onChange={event => {
                     if (event.target.files) {
-                        setFiles(event.target.files);
+                        setFiles(prev => [
+                            ...(prev ?? []),
+                            ...Array.from(event.target.files as FileList).map(file => ({ id: crypto.randomUUID(), file }))
+                        ]);
                     }
                 }}
                 accept="image/jpeg,.jpeg,.jpg,image/png,.png,image/webp,.webp,text/plain,.txt,.eml,.xml,text/html,.html,text/markdown,.md,text/csv,.csv,text/tab-separated-values,.tsv,application/rtf,.rtf,application/pdf,.pdf,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,application/vnd.ms-powerpoint,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx,application/vnd.oasis.opendocument.text,.odt,application/epub+zip,.epub,application/vnd.ms-excel,.xlsx,application/vnd.ms-outlook,.msg,text/x-rst,.rst"
             />
-            <div className="bottom-[calc(100%+1rem)] left-0 absolute flex gap-2">
-                {files && Array.from(files).map((file, index) =>
-                    file.type.startsWith("image/") ? (
-                        <motion.div
-                            key={index}
-                            initial={{ scale: 0.9, opacity: 0.5 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0.5 }}
-                            className="group relative"
-                        >
-                            <button
-                                className="top-2 right-2 absolute bg-zinc-600 opacity-0 group-hover:opacity-100 rounded-full duration-150 cursor-pointer"
-                                onClick={() => handleAttachmentDelete(index)}
+            <div className="bottom-[calc(100%+1rem)] left-0 absolute flex gap-2 h-24">
+                <AnimatePresence mode="popLayout">
+                    {files && files.map((fileObject, index) =>
+                        fileObject.file.type.startsWith("image/") ? (
+                            <motion.div
+                                layout
+                                key={fileObject.id}
+                                initial={{ scale: 0.9, opacity: 0.5 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.5, opacity: 0 }}
+                                className="group relative"
                             >
+                                <button
+                                    className="top-2 right-2 absolute bg-zinc-600 opacity-0 group-hover:opacity-100 rounded-full duration-150 cursor-pointer"
+                                    onClick={() => handleAttachmentDelete(index)}
+                                >
+                                    <Image
+                                        src="/close.svg"
+                                        width={24}
+                                        height={24}
+                                        alt="delete image"
+                                        className="invert"
+                                    />
+                                </button>
                                 <Image
-                                    src="/close.svg"
-                                    width={24}
-                                    height={24}
-                                    alt="delete image"
-                                    className="invert"
+                                    src={URL.createObjectURL(fileObject.file)}
+                                    alt={fileObject.file.name}
+                                    width={96}
+                                    height={96}
+                                    className="rounded-2xl size-24 object-cover"
                                 />
-                            </button>
-                            <Image
-                                src={URL.createObjectURL(file)}
-                                alt={file.name}
-                                width={96}
-                                height={96}
-                                className="rounded-2xl size-24 object-cover"
-                            />
-                        </motion.div>
-                    ) : null
-                )}
+                            </motion.div>
+                        ) : null
+                    )}
+                </AnimatePresence>
             </div>
             <div className="flex justify-between">
                 <div className="flex gap-2">
