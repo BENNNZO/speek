@@ -1,7 +1,8 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,11 +11,20 @@ import SideBar from "@/components/chat/SideBar";
 import Messages from "@/components/chat/Messages";
 import Gradients from "@/components/chat/Gradients";
 import InputArea from "@/components/chat/InputArea";
+import axios from "axios";
 
 export default function ClientContainer() {
+    const searchParams = useSearchParams()
+
     const [thinking, setThinking] = useState<boolean>(false)
     const [totalTokens, setTotalTokens] = useState<number>(0)
     const [sidebar, setSidebar] = useState<boolean>(true)
+
+    useEffect(() => {
+        axios.get(`/api/user/chat/messages/${searchParams.get("id")}`)
+            .then(res => setMessages(res.data))
+            .catch(err => console.log(err))
+    }, [])
 
     const { messages, input, setInput, status, reload, stop, setMessages, append, id } = useChat({
         api: "api/openai",
