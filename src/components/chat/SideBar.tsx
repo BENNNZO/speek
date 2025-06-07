@@ -1,4 +1,18 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import axios from "axios"
+import Link from "next/link"
+
 export default function SideBar({ state }: { state: boolean }) {
+    const [chats, setChats] = useState<string[]>([])
+
+    useEffect(() => {
+        axios.get("/api/user/chats")
+            .then(res => setChats(res.data))
+            .catch(err => console.log(err))
+    }, [])
+
     return (
         <div className="z-10 relative">
             <div
@@ -13,19 +27,9 @@ export default function SideBar({ state }: { state: boolean }) {
                 </div>
                 <div className="flex flex-col gap-2 mt-4 p-1.5">
                     <p className="opacity-50 pt-2 pl-1.5">Chats</p>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">testestestestest estest estest estest est</button>
+                    {chats.map((chat, index) => (
+                        <Link key={index} href={`chat?id=${chat}`} className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">{chat}</Link>
+                    ))}
                 </div>
             </div>
         </div>
