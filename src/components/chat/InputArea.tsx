@@ -1,20 +1,34 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { motion } from "framer-motion"
-import Image from "next/image"
+import { useEffect, useRef } from "react"
 import { Message, CreateMessage, ChatRequestOptions } from "ai"
+import { motion, AnimatePresence } from "framer-motion"
+import Image from "next/image"
 
 interface Props {
     input: string,
+    status: "submitted" | "streaming" | "ready" | "error",
     thinking: boolean,
     setThinking: React.Dispatch<React.SetStateAction<boolean>>,
     setInput: React.Dispatch<React.SetStateAction<string>>,
     append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>
+    reload: () => void
+    stop: () => void
 }
 
-export default function InputArea({ thinking, setThinking, input, setInput, append }: Props) {
+// const animationProps = {
+//     initial: { opacity: 0, scale: 0.75, rotate: -25 },
+//     animate: { opacity: 1, scale: 1, rotate: 0, transition: { duration: 0.1 } },
+//     exit: { opacity: 0, scale: 0.75, rotate: 25, transition: { duration: 0.1 } }
+// }
 
+const animationProps = {
+    initial: { opacity: 0, scale: 0.75 },
+    animate: { opacity: 1, scale: 1, transition: { duration: 0.1 } },
+    exit: { opacity: 0, scale: 0.75, transition: { duration: 0.1 } }
+}
+
+export default function InputArea({ thinking, setThinking, input, setInput, append, status, stop, reload }: Props) {
     const inputRef = useRef<HTMLTextAreaElement | null>(null)
     const fileUploadRef = useRef<HTMLInputElement | null>(null)
 
@@ -26,13 +40,17 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
         }
     }, [input])
 
+    function handleSubmit() {
+        if (input.trim()) {
+            setInput("")
+            append({ role: "user", content: input }, { body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })
+        }
+    }
+
     function handleKeyDown(event: React.KeyboardEvent) {
         if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault()
-            if (input.trim()) {
-                setInput("")
-                append({ role: "user", content: input }, { body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })
-            }
+            handleSubmit()
         }
     }
     return (
@@ -96,15 +114,59 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                         <p>Reason</p>
                     </button>
                 </div>
-                <button className="bg-zinc-600 rounded-full size-[40px]">
-                    <Image
-                        src="/arrow-up.svg"
-                        width={32}
-                        height={32}
-                        alt="submit"
-                        className="invert m-auto p-1"
-                    />
-                </button>
+                <motion.button
+                    initial={{ opacity: 1 }}
+                    animate={{ opacity: status !== "submitted" ? 1 : 0.5 }}
+                    className="bg-zinc-600 rounded-full size-[40px] cursor-pointer"
+                    onClick={() => {
+                        if (status === "ready") handleSubmit()
+                        if (status === "streaming") stop()
+                        if (status === "error") reload()
+                    }}
+                >
+                    <AnimatePresence mode="wait">
+                        {status === "ready" ? (
+                            <motion.div
+                                key="ready"
+                                {...animationProps}
+                            >
+                                <Image
+                                    src="/arrow-up.svg"
+                                    width={32}
+                                    height={32}
+                                    alt="submit"
+                                    className="invert m-auto p-1"
+                                />
+                            </motion.div>
+                        ) : status === "error" ? (
+                            <motion.div
+                                key="reload"
+                                {...animationProps}
+                            >
+                                <Image
+                                    src="/refresh.svg"
+                                    width={32}
+                                    height={32}
+                                    alt="submit"
+                                    className="invert m-auto p-1"
+                                />
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="stop"
+                                {...animationProps}
+                            >
+                                <Image
+                                    src="/stop.svg"
+                                    width={32}
+                                    height={32}
+                                    alt="submit"
+                                    className="invert m-auto p-2"
+                                />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.button>
             </div>
         </div>
     )

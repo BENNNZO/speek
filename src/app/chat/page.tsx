@@ -24,7 +24,7 @@ export default function Home() {
         setTotalTokens(prev => prev + usage)
     }
 
-    const { messages, input, setInput, handleInputChange, handleSubmit, status, reload, stop, setMessages, append } = useChat({
+    const { messages, input, setInput, status, reload, stop, setMessages, append } = useChat({
         api: "api/openai",
         onFinish: (message, { usage }) => { finishCallback(usage.totalTokens) }
     })
@@ -62,10 +62,9 @@ export default function Home() {
             className="grid h-screen"
         >
             <SideBar state={sidebar} />
-
             <div className="relative w-full">
                 <button
-                    className="top-4 left-4 z-50 absolute bg-zinc-700 hover:bg-zinc-600 p-2 rounded-full duration-150 cursor-pointer"
+                    className="top-4 left-4 z-50 absolute bg-zinc-800 hover:bg-zinc-700 p-2 rounded-full duration-150 cursor-pointer"
                     onClick={() => setSidebar(prev => !prev)}
                 >
                     <Image
@@ -73,7 +72,7 @@ export default function Home() {
                         width={24}
                         height={24}
                         alt="open / close sidebar"
-                        className={`invert duration-300 delay-300 opacity-75 ${sidebar ? "rotate-180" : "rotate-0"}`}
+                        className={`invert duration-400 delay-150 opacity-75 ${sidebar ? "rotate-180" : "rotate-0"}`}
                     />
                 </button>
                 <Messages
@@ -86,13 +85,16 @@ export default function Home() {
                 <Gradients color="black" />
                 <InputArea
                     input={input}
+                    status={status}
                     thinking={thinking}
                     setThinking={setThinking}
                     setInput={setInput}
                     append={append}
+                    reload={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
+                    stop={stop}
                 />
             </div>
-            {/* <DebugInfo /> */}
+            <DebugInfo />
         </motion.div>
     );
 
@@ -114,7 +116,7 @@ export default function Home() {
 
     function DebugInfo() {
         return (
-            <div className="top-4 right-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border-white/15 border-t rounded-2xl">
+            <div className="right-4 bottom-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border-white/15 border-t rounded-2xl">
                 <Link href="/" className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer">Home</Link>
                 <div className="bg-white/15 mx-2 h-px"></div>
                 <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">ID: {searchParams.get("id")}</p>
