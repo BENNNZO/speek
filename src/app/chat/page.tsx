@@ -59,7 +59,7 @@ export default function Home() {
         <motion.div
             initial={{ gridTemplateColumns: "18rem 1fr" }}
             animate={{ gridTemplateColumns: sidebar ? "18rem 1fr" : "0rem 1fr" }}
-            className="grid"
+            className="grid h-screen"
         >
             <SideBar state={sidebar} />
 
