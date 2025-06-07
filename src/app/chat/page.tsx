@@ -3,6 +3,7 @@
 import { useChat } from "@ai-sdk/react";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
 import { code } from "@/testChats";
 import Link from "next/link";
 
@@ -16,6 +17,7 @@ export default function Home() {
 
     const [thinking, setThinking] = useState<boolean>(false)
     const [totalTokens, setTotalTokens] = useState<number>(0)
+    const [sidebar, setSidebar] = useState<boolean>(true)
 
     function finishCallback(usage: number) {
         setTotalTokens(prev => prev + usage)
@@ -28,7 +30,6 @@ export default function Home() {
 
     useEffect(() => {
         setMessages(code)
-        // console.log(basic)
     }, [])
 
     // function for reload button on each assistant message
@@ -54,10 +55,20 @@ export default function Home() {
     }
 
     return (
-        <div className="grid grid-cols-[18rem_1fr]">
-            <SideBar />
+        <motion.div
+            initial={{ gridTemplateColumns: "18rem 1fr" }}
+            animate={{ gridTemplateColumns: sidebar ? "18rem 1fr" : "0rem 1fr" }}
+            className="grid"
+        >
+            <SideBar state={sidebar} />
 
             <div className="relative w-full">
+                <button
+                    className="top-4 left-4 z-50 absolute bg-zinc-700 px-4 py-2 rounded-full"
+                    onClick={() => setSidebar(prev => !prev)}
+                >
+                    {JSON.stringify(sidebar)}
+                </button>
                 <Messages
                     messages={messages}
                     status={status}
@@ -76,7 +87,7 @@ export default function Home() {
             </div>
 
             <DebugInfo />
-        </div>
+        </motion.div>
     );
 
 
