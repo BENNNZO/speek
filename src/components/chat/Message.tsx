@@ -114,7 +114,7 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                                                     </SyntaxHighlighter>
                                                 </div>
                                             ) : (
-                                                <code {...rest} className="bg-zinc-600 px-1.5 py-0.5 rounded-md text-white not-prose">
+                                                <code {...rest} className="bg-zinc-700 px-1.5 py-0.5 rounded-md text-white not-prose">
                                                     {children}
                                                 </code>
                                             )
