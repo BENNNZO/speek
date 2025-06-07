@@ -13,7 +13,7 @@ interface Props {
 export default function Messages({ messages, status, reload, reloadFunction, editFunction }: Props) {
 
     return (
-        <div className="w-full max-h-screen overflow-scroll">
+        <div className="w-full max-h-screen overflow-x-hidden overflow-y-auto custom-scrollbar">
             <div className="flex flex-col gap-8 mx-auto pt-12 pb-44 max-w-4xl">
                 {/* MESSAGES */}
                 {messages.map((message) => (

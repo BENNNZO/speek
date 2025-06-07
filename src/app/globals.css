@@ -2,6 +2,8 @@
 @plugin "@tailwindcss/typography";
 
 
+/* -------------------------- EDIT MODAL SCROLLBAR -------------------------- */
+
 .edit-scrollbar {
     --sb-track-color: oklch(37% 0.013 285.805);
     --sb-thumb-color: #949494;
@@ -25,6 +27,38 @@
 
 @supports not selector(::-webkit-scrollbar) {
     .edit-scrollbar {
+        scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    }
+}
+
+
+
+
+/* ---------------------------- CUSTOM SCROLLBAR ---------------------------- */
+
+.custom-scrollbar {
+    --sb-track-color: oklch(37% 0.013 285.805);
+    --sb-thumb-color: #949494;
+    --sb-size: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: var(--sb-size)
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 0px;
+
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    .custom-scrollbar {
         scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
     }
 }
