@@ -16,12 +16,6 @@ interface Props {
     stop: () => void
 }
 
-// const animationProps = {
-//     initial: { opacity: 0, scale: 0.75, rotate: -25 },
-//     animate: { opacity: 1, scale: 1, rotate: 0, transition: { duration: 0.1 } },
-//     exit: { opacity: 0, scale: 0.75, rotate: 25, transition: { duration: 0.1 } }
-// }
-
 const animationProps = {
     initial: { opacity: 0, scale: 0.75 },
     animate: { opacity: 1, scale: 1, transition: { duration: 0.1 } },
@@ -53,6 +47,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
             handleSubmit()
         }
     }
+
     return (
         <div className="bottom-4 left-1/2 absolute flex flex-col gap-2 bg-zinc-800 p-2 rounded-3xl -translate-x-1/2 pointer-events-auto bo/20">
             <textarea
@@ -65,6 +60,14 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 onChange={(event) => setInput(event.target.value)}
                 onKeyDown={(event) => handleKeyDown(event)}
             />
+            <input
+                ref={fileUploadRef}
+                multiple
+                type="file"
+                className="hidden"
+                data-cnp-create-listener="true"
+                accept="image/jpeg,.jpeg,.jpg,image/png,.png,image/webp,.webp,text/plain,.txt,.eml,.xml,text/html,.html,text/markdown,.md,text/csv,.csv,text/tab-separated-values,.tsv,application/rtf,.rtf,application/pdf,.pdf,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,application/vnd.ms-powerpoint,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx,application/vnd.oasis.opendocument.text,.odt,application/epub+zip,.epub,application/vnd.ms-excel,.xlsx,application/vnd.ms-outlook,.msg,text/x-rst,.rst"
+            />
             <div className="flex justify-between">
                 <div className="flex gap-2">
                     <button className="bg-zinc-600 rounded-full size-[40px]">
@@ -76,30 +79,20 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                             className="invert m-auto"
                         />
                     </button>
-                    <div className="flex">
-                        <input
-                            ref={fileUploadRef}
-                            multiple
-                            type="file"
-                            className="hidden"
-                            data-cnp-create-listener="true"
-                            accept="image/jpeg,.jpeg,.jpg,image/png,.png,image/webp,.webp,text/plain,.txt,.eml,.xml,text/html,.html,text/markdown,.md,text/csv,.csv,text/tab-separated-values,.tsv,application/rtf,.rtf,application/pdf,.pdf,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,application/vnd.ms-powerpoint,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx,application/vnd.oasis.opendocument.text,.odt,application/epub+zip,.epub,application/vnd.ms-excel,.xlsx,application/vnd.ms-outlook,.msg,text/x-rst,.rst"
+                    <button
+                        className="bg-zinc-600 rounded-full size-[40px]"
+                        onClick={() => {
+                            fileUploadRef.current?.click()
+                        }}
+                    >
+                        <Image
+                            src="/attach.svg"
+                            width={28}
+                            height={28}
+                            alt="attach"
+                            className="invert m-auto rotate-45"
                         />
-                        <button
-                            className="bg-zinc-600 rounded-full size-[40px]"
-                            onClick={() => {
-                                fileUploadRef.current?.click()
-                            }}
-                        >
-                            <Image
-                                src="/attach.svg"
-                                width={28}
-                                height={28}
-                                alt="attach"
-                                className="invert m-auto rotate-45"
-                            />
-                        </button>
-                    </div>
+                    </button>
                     <button
                         onClick={() => setThinking(prev => !prev)}
                         className={`flex items-center gap-1 pr-4 pl-2 rounded-full cursor-pointer ${thinking ? "bg-blue-600" : "bg-zinc-600 text-zinc-400"} duration-150`}
@@ -116,8 +109,12 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 </div>
                 <motion.button
                     initial={{ opacity: 1 }}
-                    animate={{ opacity: status !== "submitted" ? 1 : 0.5 }}
-                    className="bg-zinc-600 rounded-full size-[40px] cursor-pointer"
+                    animate={{
+                        opacity: status !== "submitted" && (input.trim() || status === "streaming") ? 1 : 0.5,
+                        scale: status !== "submitted" && (input.trim() || status === "streaming") ? 1 : 0.9,
+                        cursor: status !== "submitted" && (input.trim() || status === "streaming") ? "pointer" : "not-allowed"
+                    }}
+                    className="bg-zinc-200 rounded-full size-[40px] cursor-pointer"
                     onClick={() => {
                         if (status === "ready") handleSubmit()
                         if (status === "streaming") stop()
@@ -135,7 +132,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                                     width={32}
                                     height={32}
                                     alt="submit"
-                                    className="invert m-auto p-1"
+                                    className="m-auto p-1"
                                 />
                             </motion.div>
                         ) : status === "error" ? (
@@ -148,7 +145,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                                     width={32}
                                     height={32}
                                     alt="submit"
-                                    className="invert m-auto p-1"
+                                    className="m-auto p-1"
                                 />
                             </motion.div>
                         ) : (
@@ -161,7 +158,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                                     width={32}
                                     height={32}
                                     alt="submit"
-                                    className="invert m-auto p-2"
+                                    className="m-auto p-2"
                                 />
                             </motion.div>
                         )}
