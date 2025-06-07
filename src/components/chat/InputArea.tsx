@@ -79,7 +79,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
         })
     }
 
-    // Prepare files for submission as FileList
+    // // Prepare files for submission as FileList
     function getFileListForSubmit() {
         const dt = new DataTransfer()
 

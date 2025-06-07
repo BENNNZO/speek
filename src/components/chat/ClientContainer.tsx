@@ -1,9 +1,8 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,10 +22,6 @@ export default function ClientContainer() {
             setTotalTokens(prev => prev + usage.totalTokens)
         }
     })
-
-    useEffect(() => {
-        // setMessages(code)
-    }, [])
 
     // function for reload button on each assistant message
     function reloadId(id: string) {
@@ -74,8 +69,8 @@ export default function ClientContainer() {
                     messages={messages}
                     status={status}
                     reload={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
-                    reloadFunction={(id: string) => reloadId(id)}
-                    editFunction={(id: string, content: string) => editId(id, content)}
+                    reloadFunction={reloadId}
+                    editFunction={editId}
                 />
                 <Gradients color="black" />
                 <InputArea
