@@ -107,9 +107,7 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                                                         style={vscDarkPlus}
                                                         customStyle={{
                                                             margin: 0,
-                                                            borderRadius: 0,
-                                                            borderTop: "1px",
-                                                            borderColor: "rgba(255, 255, 255, 0.15)"
+                                                            borderRadius: "10px",
                                                         }}
                                                     >
                                                         {String(children)}
