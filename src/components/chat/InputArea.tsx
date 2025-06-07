@@ -126,6 +126,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 {files && Array.from(files).map((file, index) =>
                     file.type.startsWith("image/") ? (
                         <motion.div
+                            key={index}
                             initial={{ scale: 0.9, opacity: 0.5 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0.5 }}
@@ -144,7 +145,6 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                                 />
                             </button>
                             <Image
-                                key={index}
                                 src={URL.createObjectURL(file)}
                                 alt={file.name}
                                 width={96}

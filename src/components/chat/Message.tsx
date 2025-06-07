@@ -21,7 +21,27 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                         className="group/container"
                         layoutId={message.id}
                     >
-                        <p className="bg-zinc-700 px-4 py-2 rounded-3xl text-zinc-200">{message.content}</p>
+                        <div className="flex flex-col gap-2">
+                            {message?.experimental_attachments &&
+                                <div className="flex gap-2">
+                                    {message?.experimental_attachments
+                                        ?.filter(attachment =>
+                                            attachment?.contentType?.startsWith('image/'),
+                                        )
+                                        .map((attachment, index) => (
+                                            <Image
+                                                key={`${message.id}-${index}`}
+                                                src={attachment.url}
+                                                width={96}
+                                                height={96}
+                                                className="rounded-2xl size-24 object-cover"
+                                                alt={attachment.name ?? `attachment-${index}`}
+                                            />
+                                        ))}
+                                </div>
+                            }
+                            <p className="self-end bg-zinc-700 px-4 py-2 rounded-3xl text-zinc-200">{message.content}</p>
+                        </div>
                         <div className="top-full right-0 absolute flex justify-center items-center gap-2 opacity-0 group-hover/container:opacity-100 pt-2 duration-150">
                             <Button hoverText="Copy" delay={0}>
                                 <CopyButton content={message.content} />
