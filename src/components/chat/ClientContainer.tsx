@@ -105,7 +105,7 @@ export default function ClientContainer() {
                     id={searchParams.get("id") || id}
                 />
             </div>
-            <DebugInfo />
+            {/* <DebugInfo /> */}
         </motion.div>
     );
 
