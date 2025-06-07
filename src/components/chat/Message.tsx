@@ -92,7 +92,8 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                                             )
                                         },
                                         code(props) {
-                                            const { children, className, node: _node, ref: _ref, ...rest } = props
+                                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                            const { children, className, node, ref, ...rest } = props
                                             const match = /language-(\w+)/.exec(className || "")
 
                                             return match ? (
