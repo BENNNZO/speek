@@ -16,6 +16,7 @@ interface Props {
     stop: () => void
 }
 
+// Animation settings for framer-motion on dynamic action button
 const animationProps = {
     initial: { opacity: 0, scale: 0.75 },
     animate: { opacity: 1, scale: 1, transition: { duration: 0.1 } },
@@ -23,11 +24,14 @@ const animationProps = {
 }
 
 export default function InputArea({ thinking, setThinking, input, setInput, append, status, stop, reload }: Props) {
+    // Refs for textarea and file input
     const inputRef = useRef<HTMLTextAreaElement | null>(null)
     const fileInputRef = useRef<HTMLInputElement | null>(null)
 
+    // State for attached files
     const [files, setFiles] = useState<{ id: string, file: File }[] | undefined>(undefined)
 
+    // Auto-resize textarea based on input
     useEffect(() => {
         const inputElement = inputRef.current
         if (inputElement) {
@@ -36,6 +40,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
         }
     }, [input])
 
+    // Handle image paste from clipboard
     useEffect(() => {
         const handlePaste = (event: ClipboardEvent) => {
             const clipboardItems = event.clipboardData?.items;
@@ -53,6 +58,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 }
             }
 
+            // Only allow up to 5 files
             if (newFiles.length > (files?.length || 0) && newFiles.length <= 5) {
                 setFiles(newFiles);
             }
@@ -63,6 +69,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
         return () => window.removeEventListener("paste", handlePaste)
     }, [files]);
 
+    // Remove file at given index
     function handleAttachmentDelete(index: number) {
         if (!files) return
 
@@ -71,6 +78,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
         })
     }
 
+    // Prepare files for submission as FileList
     function getFileListForSubmit() {
         const dt = new DataTransfer()
 
@@ -81,6 +89,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
         return dt.files
     }
 
+    // Handle message submit
     function handleSubmit() {
         if (input.trim()) {
             setInput("")
@@ -97,12 +106,14 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
 
             setFiles(undefined);
 
+            // Reset file input value
             if (fileInputRef.current) {
                 fileInputRef.current.value = '';
             }
         }
     }
 
+    // Submit on Enter (without Shift)
     function handleKeyDown(event: React.KeyboardEvent) {
         if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault()
@@ -112,6 +123,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
 
     return (
         <div className="bottom-4 left-1/2 absolute flex flex-col gap-2 bg-zinc-800 p-2 rounded-3xl -translate-x-1/2 pointer-events-auto bo/20">
+            {/* Textarea for user input */}
             <textarea
                 ref={inputRef}
                 value={input}
@@ -122,6 +134,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 onChange={(event) => setInput(event.target.value)}
                 onKeyDown={(event) => handleKeyDown(event)}
             />
+            {/* Hidden file input for attachments */}
             <input
                 ref={fileInputRef}
                 multiple
@@ -130,6 +143,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 data-cnp-create-listener="true"
                 onChange={event => {
                     if (event.target.files) {
+                        // Only allow up to 5 files in total
                         if (event.target.files.length <= 5 - (files?.length ?? 5)) {
                             setFiles(prev => [
                                 ...(prev ?? []),
@@ -140,6 +154,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 }}
                 accept="image/jpeg,.jpeg,.jpg,image/png,.png,image/webp,.webp,text/plain,.txt,.eml,.xml,text/html,.html,text/markdown,.md,text/csv,.csv,text/tab-separated-values,.tsv,application/rtf,.rtf,application/pdf,.pdf,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,application/vnd.ms-powerpoint,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx,application/vnd.oasis.opendocument.text,.odt,application/epub+zip,.epub,application/vnd.ms-excel,.xlsx,application/vnd.ms-outlook,.msg,text/x-rst,.rst"
             />
+            {/* Preview of attached images */}
             <div className="bottom-[calc(100%+1rem)] left-0 absolute flex gap-2 h-24">
                 {files && (files.length > 0) && <p className="bottom-[calc(100%+0.5rem)] left-0 absolute font-semibold text-zinc-600 whitespace-nowrap">{files.length} / 5</p>}
                 <AnimatePresence mode="popLayout">
@@ -153,6 +168,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                                 exit={{ scale: 0.5, opacity: 0 }}
                                 className="group relative"
                             >
+                                {/* Delete button for image */}
                                 <button
                                     className="top-2 right-2 absolute bg-zinc-600 opacity-0 group-hover:opacity-100 rounded-full duration-150 cursor-pointer"
                                     onClick={() => handleAttachmentDelete(index)}
@@ -165,6 +181,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                                         className="invert"
                                     />
                                 </button>
+                                {/* Image preview */}
                                 <Image
                                     src={URL.createObjectURL(fileObject.file)}
                                     alt={fileObject.file.name}
@@ -177,8 +194,10 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                     )}
                 </AnimatePresence>
             </div>
+            {/* Action buttons row */}
             <div className="flex justify-between">
                 <div className="flex gap-2">
+                    {/* New chat button (no handler) */}
                     <button className="bg-zinc-600 hover:bg-zinc-500 rounded-full size-[40px] duration-150 cursor-pointer">
                         <Image
                             src="/add.svg"
@@ -188,6 +207,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                             className="invert m-auto"
                         />
                     </button>
+                    {/* Attach file button */}
                     <button
                         className="bg-zinc-600 hover:bg-zinc-500 rounded-full size-[40px] duration-150 cursor-pointer"
                         onClick={() => {
@@ -202,6 +222,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                             className="invert m-auto rotate-45"
                         />
                     </button>
+                    {/* Toggle "thinking" mode */}
                     <button
                         onClick={() => setThinking(prev => !prev)}
                         className={`flex items-center gap-1 pr-4 pl-2 rounded-full cursor-pointer ${thinking ? "bg-blue-600 hover:bg-blue-500" : "bg-zinc-600 text-zinc-400 hover:text-white hover:bg-zinc-500"} duration-150`}
@@ -216,6 +237,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                         <p>Reason</p>
                     </button>
                 </div>
+                {/* Submit/Stop/Reload button */}
                 <motion.button
                     initial={{ opacity: 1 }}
                     animate={{
@@ -231,6 +253,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                     }}
                 >
                     <AnimatePresence mode="wait">
+                        {/* Show different icon based on status */}
                         {status === "ready" ? (
                             <motion.div
                                 key="ready"
