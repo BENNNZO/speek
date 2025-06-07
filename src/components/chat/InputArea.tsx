@@ -53,7 +53,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 }
             }
 
-            if (newFiles.length > (files?.length || 0)) {
+            if (newFiles.length > (files?.length || 0) && newFiles.length <= 5) {
                 setFiles(newFiles);
             }
         }
@@ -71,6 +71,16 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
         })
     }
 
+    function getFileListForSubmit() {
+        const dt = new DataTransfer()
+
+        files?.forEach(({ file }) => {
+            dt.items.add(file)
+        })
+
+        return dt.files
+    }
+
     function handleSubmit() {
         if (input.trim()) {
             setInput("")
@@ -81,7 +91,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 },
                 {
                     body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" },
-                    experimental_attachments: files?.map(({ file }) => ({ file, url: URL.createObjectURL(file) }))
+                    experimental_attachments: getFileListForSubmit()
                 }
             )
 
@@ -120,15 +130,18 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 data-cnp-create-listener="true"
                 onChange={event => {
                     if (event.target.files) {
-                        setFiles(prev => [
-                            ...(prev ?? []),
-                            ...Array.from(event.target.files as FileList).map(file => ({ id: crypto.randomUUID(), file }))
-                        ]);
+                        if (event.target.files.length <= 5 - (files?.length ?? 5)) {
+                            setFiles(prev => [
+                                ...(prev ?? []),
+                                ...Array.from(event.target.files as FileList).map(file => ({ id: crypto.randomUUID(), file }))
+                            ]);
+                        }
                     }
                 }}
                 accept="image/jpeg,.jpeg,.jpg,image/png,.png,image/webp,.webp,text/plain,.txt,.eml,.xml,text/html,.html,text/markdown,.md,text/csv,.csv,text/tab-separated-values,.tsv,application/rtf,.rtf,application/pdf,.pdf,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,application/vnd.ms-powerpoint,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx,application/vnd.oasis.opendocument.text,.odt,application/epub+zip,.epub,application/vnd.ms-excel,.xlsx,application/vnd.ms-outlook,.msg,text/x-rst,.rst"
             />
             <div className="bottom-[calc(100%+1rem)] left-0 absolute flex gap-2 h-24">
+                {files && (files.length > 0) && <p className="bottom-[calc(100%+0.5rem)] left-0 absolute font-semibold text-zinc-600 whitespace-nowrap">{files.length} / 5</p>}
                 <AnimatePresence mode="popLayout">
                     {files && files.map((fileObject, index) =>
                         fileObject.file.type.startsWith("image/") ? (
