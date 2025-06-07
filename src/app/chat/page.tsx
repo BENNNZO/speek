@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { code } from "@/testChats";
+import Image from "next/image";
 import Link from "next/link";
 
 import SideBar from "@/components/chat/SideBar";
@@ -64,10 +65,16 @@ export default function Home() {
 
             <div className="relative w-full">
                 <button
-                    className="top-4 left-4 z-50 absolute bg-zinc-700 px-4 py-2 rounded-full"
+                    className="top-4 left-4 z-50 absolute bg-zinc-700 hover:bg-zinc-600 p-2 rounded-full duration-150 cursor-pointer"
                     onClick={() => setSidebar(prev => !prev)}
                 >
-                    {JSON.stringify(sidebar)}
+                    <Image
+                        src="/arrow-forward.svg"
+                        width={24}
+                        height={24}
+                        alt="open / close sidebar"
+                        className={`invert duration-300 delay-300 opacity-75 ${sidebar ? "rotate-180" : "rotate-0"}`}
+                    />
                 </button>
                 <Messages
                     messages={messages}
@@ -85,8 +92,7 @@ export default function Home() {
                     append={append}
                 />
             </div>
-
-            <DebugInfo />
+            {/* <DebugInfo /> */}
         </motion.div>
     );
 
