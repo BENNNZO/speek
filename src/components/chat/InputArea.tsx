@@ -179,7 +179,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
             </div>
             <div className="flex justify-between">
                 <div className="flex gap-2">
-                    <button className="bg-zinc-600 rounded-full size-[40px]">
+                    <button className="bg-zinc-600 hover:bg-zinc-500 rounded-full size-[40px] duration-150 cursor-pointer">
                         <Image
                             src="/add.svg"
                             width={28}
@@ -189,7 +189,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                         />
                     </button>
                     <button
-                        className="bg-zinc-600 rounded-full size-[40px]"
+                        className="bg-zinc-600 hover:bg-zinc-500 rounded-full size-[40px] duration-150 cursor-pointer"
                         onClick={() => {
                             fileInputRef.current?.click()
                         }}
@@ -204,7 +204,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                     </button>
                     <button
                         onClick={() => setThinking(prev => !prev)}
-                        className={`flex items-center gap-1 pr-4 pl-2 rounded-full cursor-pointer ${thinking ? "bg-blue-600" : "bg-zinc-600 text-zinc-400"} duration-150`}
+                        className={`flex items-center gap-1 pr-4 pl-2 rounded-full cursor-pointer ${thinking ? "bg-blue-600 hover:bg-blue-500" : "bg-zinc-600 text-zinc-400 hover:text-white hover:bg-zinc-500"} duration-150`}
                     >
                         <Image
                             src="/bulb.svg"
