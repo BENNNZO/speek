@@ -66,6 +66,17 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
         return () => window.removeEventListener("paste", handlePaste)
     }, [files]);
 
+    function handleAttachmentDelete(index: number) {
+        if (!files) return
+
+        const dt = new DataTransfer()
+        Array.from(files).forEach((file, fileIndex) => {
+            if (index !== fileIndex) dt.items.add(file)
+        })
+
+        setFiles(dt.files)
+    }
+
     function handleSubmit() {
         if (input.trim()) {
             setInput("")
@@ -111,19 +122,36 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                 }}
                 accept="image/jpeg,.jpeg,.jpg,image/png,.png,image/webp,.webp,text/plain,.txt,.eml,.xml,text/html,.html,text/markdown,.md,text/csv,.csv,text/tab-separated-values,.tsv,application/rtf,.rtf,application/pdf,.pdf,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,application/vnd.ms-powerpoint,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx,application/vnd.oasis.opendocument.text,.odt,application/epub+zip,.epub,application/vnd.ms-excel,.xlsx,application/vnd.ms-outlook,.msg,text/x-rst,.rst"
             />
-            <div className="bottom-[calc(100%+1rem)] left-0 absolute flex gap-2 rounded-3xl">
+            <div className="bottom-[calc(100%+1rem)] left-0 absolute flex gap-2">
                 {files && Array.from(files).map((file, index) =>
                     file.type.startsWith("image/") ? (
-                        <div>
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0.5 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0.5 }}
+                            className="group relative"
+                        >
+                            <button
+                                className="top-2 right-2 absolute bg-zinc-600 opacity-0 group-hover:opacity-100 rounded-full duration-150 cursor-pointer"
+                                onClick={() => handleAttachmentDelete(index)}
+                            >
+                                <Image
+                                    src="/close.svg"
+                                    width={24}
+                                    height={24}
+                                    alt="delete image"
+                                    className="invert"
+                                />
+                            </button>
                             <Image
                                 key={index}
                                 src={URL.createObjectURL(file)}
                                 alt={file.name}
-                                width={100}
-                                height={100}
-                                className="border border-white/15 rounded-2xl object-cover"
+                                width={96}
+                                height={96}
+                                className="rounded-2xl size-24 object-cover"
                             />
-                        </div>
+                        </motion.div>
                     ) : null
                 )}
             </div>
