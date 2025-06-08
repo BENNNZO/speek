@@ -1,12 +1,11 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react";
-import { useState, useEffect, useCallback, useRef, memo } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import axios from "axios";
 import Image from "next/image";
-import Link from "next/link";
 
 import SideBar from "@/components/chat/SideBar";
 import Messages from "@/components/chat/Messages";
@@ -20,6 +19,7 @@ export default function ClientContainer() {
     const [sidebar, setSidebar] = useState<boolean>(true)
     const [loadingMessages, setLoadingMessages] = useState<boolean>(false)
 
+    // update chatlog when the id in the url changes
     useEffect(() => {
         if (searchParams.get("id")) {
             setMessages([])
@@ -36,16 +36,18 @@ export default function ClientContainer() {
 
     const { messages, status, reload, stop, setMessages, append, id } = useChat({ api: "api/openai" })
 
+    // setup message ref for callback functions
     const messagesRef = useRef(messages)
     useEffect(() => {
         messagesRef.current = messages
     }, [messages])
 
+    // callback function for quickly retrying the last message in the chat
     const errorReloadCallback = useCallback(() => {
         reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })
     }, [reload, thinking])
 
-    // function for reload button on each assistant message
+    // callback function for reload button on each assistant message
     const reloadIdCallback = useCallback((id: string) => {
         const messagesCallback = messagesRef.current
 
@@ -59,7 +61,7 @@ export default function ClientContainer() {
         })
     }, [append, setMessages, thinking])
 
-    // function for edit button on each user message
+    // callback function for edit button on each user message
     const editIdCallback = useCallback((id: string, content: string) => {
         const messagesCallback = messagesRef.current
 
@@ -70,10 +72,6 @@ export default function ClientContainer() {
             }
         })
     }, [append, setMessages, thinking])
-
-    const MessagesMemo = memo(Messages)
-
-    console.log("ClientContainer render", { messages, status, errorReloadCallback, reloadIdCallback, editIdCallback, loadingMessages });
 
     return (
         <motion.div
@@ -95,7 +93,7 @@ export default function ClientContainer() {
                         className={`invert duration-400 delay-150 opacity-75 ${sidebar ? "rotate-180" : "rotate-0"}`}
                     />
                 </button>
-                <MessagesMemo
+                <Messages
                     messages={messages}
                     status={status}
                     errorReload={errorReloadCallback}

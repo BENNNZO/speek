@@ -17,10 +17,7 @@ interface Props {
 export default memo(function Messages({ messages, status, errorReload, reloadFunction, editFunction, loading }: Props) {
     const messagesContainerRef = useRef<HTMLDivElement | null>(null)
 
-    console.log("Messages render", { messages, status, errorReload, reloadFunction, editFunction, loading });
-
     useEffect(() => {
-        console.log("Messages rerender")
         if (messagesContainerRef?.current) {
             messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
         }
