@@ -1,5 +1,6 @@
 "use client"
 
+import { useRef, useEffect, memo } from "react";
 import { UIMessage } from "ai"
 import Image from "next/image";
 import Message from "./Message";
@@ -13,9 +14,17 @@ interface Props {
     loading: boolean
 }
 
-export default function Messages({ messages, status, reload, reloadFunction, editFunction, loading }: Props) {
+export default memo(function Messages({ messages, status, reload, reloadFunction, editFunction, loading }: Props) {
+    const messagesContainerRef = useRef<HTMLDivElement | null>(null)
+
+    useEffect(() => {
+        if (messagesContainerRef?.current) {
+            messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
+        }
+    }, [loading])
+
     return (
-        <div className="w-full max-h-screen overflow-x-hidden overflow-y-auto custom-scrollbar">
+        <div ref={messagesContainerRef} className="w-full max-h-screen overflow-x-hidden overflow-y-auto custom-scrollbar">
             <div className="flex flex-col gap-8 mx-auto pt-12 pb-44 max-w-4xl">
                 {/* MESSAGES */}
                 {messages.map((message) => (
@@ -45,4 +54,4 @@ export default function Messages({ messages, status, reload, reloadFunction, edi
             </div>
         </div>
     )
-}
+})

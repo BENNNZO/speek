@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { UIMessage } from "ai"
 import Markdown from "react-markdown";
@@ -9,7 +9,7 @@ import Image from "next/image";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-export default function Message({ message, reloadFunction, editFunction }: { message: UIMessage, reloadFunction: (id: string) => void, editFunction: (id: string, content: string) => void }) {
+export default memo(function Message({ message, reloadFunction, editFunction }: { message: UIMessage, reloadFunction: (id: string) => void, editFunction: (id: string, content: string) => void }) {
     const [editState, setEditState] = useState(false)
     const [editContent, setEditContent] = useState(message.content)
 
@@ -98,55 +98,53 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
         case "assistant":
             return (
                 <div className="relative self-start w-4/5">
-                    {message.parts.map((part, index) => (
-                        part.type === "text" && (
-                            <div key={index} className="prose-invert prose prose-zinc">
-                                <Markdown
-                                    remarkPlugins={[remarkGfm]}
-                                    components={{
-                                        pre(props) {
-                                            return (
-                                                <pre className="p-0">
-                                                    {props.children}
-                                                </pre>
-                                            )
-                                        },
-                                        code(props) {
-                                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                                            const { children, className, node, ref, ...rest } = props
-                                            const match = /language-(\w+)/.exec(className || "")
+                    <div className="prose-invert prose prose-zinc">
+                        <Markdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                                pre(props) {
+                                    return (
+                                        <pre className="p-0">
+                                            {props.children}
+                                        </pre>
+                                    )
+                                },
+                                code(props) {
+                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                                    const { children, className, node, ref, ...rest } = props
+                                    const match = /language-(\w+)/.exec(className || "")
 
-                                            return match ? (
-                                                <div className="bg-zinc-700 border-2 border-zinc-700 rounded-xl overflow-hidden">
-                                                    <div className="flex justify-between px-3 py-2 h-10 not-prose">
-                                                        <p className="text-base not-prose">{match[1]}</p>
-                                                        <CopyButton content={String(children)} />
-                                                    </div>
-                                                    <SyntaxHighlighter
-                                                        {...rest}
-                                                        language={match[1]}
-                                                        style={vscDarkPlus}
-                                                        customStyle={{
-                                                            margin: 0,
-                                                            borderRadius: "10px",
-                                                        }}
-                                                    >
-                                                        {String(children)}
-                                                    </SyntaxHighlighter>
-                                                </div>
-                                            ) : (
-                                                <code {...rest} className="bg-zinc-700 px-1.5 py-0.5 rounded-md text-white not-prose">
-                                                    {children}
-                                                </code>
-                                            )
-                                        }
-                                    }}
-                                >
-                                    {part.text}
-                                </Markdown>
-                            </div>
-                        )
-                    ))}
+                                    console.log("rerender")
+
+                                    return match ? (
+                                        <div className="bg-zinc-700 border-2 border-zinc-700 rounded-xl overflow-hidden">
+                                            <div className="flex justify-between px-3 py-2 h-10 not-prose">
+                                                <p className="text-base not-prose">{match[1]}</p>
+                                                <CopyButton content={String(children)} />
+                                            </div>
+                                            <SyntaxHighlighter
+                                                {...rest}
+                                                language={match[1]}
+                                                style={vscDarkPlus}
+                                                customStyle={{
+                                                    margin: 0,
+                                                    borderRadius: "10px",
+                                                }}
+                                            >
+                                                {String(children)}
+                                            </SyntaxHighlighter>
+                                        </div>
+                                    ) : (
+                                        <code {...rest} className="bg-zinc-700 px-1.5 py-0.5 rounded-md text-white not-prose">
+                                            {children}
+                                        </code>
+                                    )
+                                }
+                            }}
+                        >
+                            {message.content}
+                        </Markdown>
+                    </div>
                     <div className="top-full left-0 absolute flex justify-center items-center gap-2 pt-2">
                         <Button hoverText="Copy" delay={0}>
                             <CopyButton content={message.content} />
@@ -176,7 +174,7 @@ export default function Message({ message, reloadFunction, editFunction }: { mes
                 </div>
             )
     }
-}
+})
 
 function Button({ hoverText, delay, children }: { hoverText: string, delay: number, children: React.ReactNode }) {
     return (
