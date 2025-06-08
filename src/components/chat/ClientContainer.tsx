@@ -1,7 +1,7 @@
 "use client"
 
 import { useChat } from "@ai-sdk/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -17,7 +17,6 @@ export default function ClientContainer() {
     const searchParams = useSearchParams()
 
     const [thinking, setThinking] = useState<boolean>(false)
-    const [totalTokens, setTotalTokens] = useState<number>(0)
     const [sidebar, setSidebar] = useState<boolean>(true)
     const [loadingMessages, setLoadingMessages] = useState<boolean>(false)
 
@@ -35,34 +34,46 @@ export default function ClientContainer() {
         }
     }, [searchParams])
 
-    const { messages, input, setInput, status, reload, stop, setMessages, append, id } = useChat({
-        api: "api/openai",
-        onFinish: (message, { usage }) => {
-            setTotalTokens(prev => prev + usage.totalTokens)
-        }
-    })
+    const { messages, status, reload, stop, setMessages, append, id } = useChat({ api: "api/openai" })
+
+    const messagesRef = useRef(messages)
+    useEffect(() => {
+        messagesRef.current = messages
+    }, [messages])
+
+    const errorReloadCallback = useCallback(() => {
+        reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })
+    }, [reload, thinking])
 
     // function for reload button on each assistant message
-    function reloadId(id: string) {
-        messages.forEach((message, index) => {
-            if (message.id === id) {
-                const userMessage = messages[index - 1]
+    const reloadIdCallback = useCallback((id: string) => {
+        const messagesCallback = messagesRef.current
 
-                setMessages(messages.slice(0, index - 1))
+        messagesCallback.forEach((message, index) => {
+            if (message.id === id) {
+                const userMessage = messagesCallback[index - 1]
+
+                setMessages(messagesCallback.slice(0, index - 1))
                 append(userMessage, { body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })
             }
         })
-    }
+    }, [append, setMessages, thinking])
 
     // function for edit button on each user message
-    function editId(id: string, content: string) {
-        messages.forEach((message, index) => {
+    const editIdCallback = useCallback((id: string, content: string) => {
+        const messagesCallback = messagesRef.current
+
+        messagesCallback.forEach((message, index) => {
             if (message.id === id) {
-                setMessages(messages.slice(0, index))
+                setMessages(messagesCallback.slice(0, index))
                 append({ role: "user", content }, { body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })
             }
         })
-    }
+    }, [append, setMessages, thinking])
+
+    const MessagesMemo = memo(Messages)
+
+    console.log("ClientContainer render", { messages, status, errorReloadCallback, reloadIdCallback, editIdCallback, loadingMessages });
 
     return (
         <motion.div
@@ -84,77 +95,36 @@ export default function ClientContainer() {
                         className={`invert duration-400 delay-150 opacity-75 ${sidebar ? "rotate-180" : "rotate-0"}`}
                     />
                 </button>
-                <Messages
+                <MessagesMemo
                     messages={messages}
                     status={status}
-                    reload={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
-                    reloadFunction={reloadId}
-                    editFunction={editId}
+                    errorReload={errorReloadCallback}
+                    reloadFunction={reloadIdCallback}
+                    editFunction={editIdCallback}
                     loading={loadingMessages}
                 />
                 <Gradients color="black" />
                 <InputArea
-                    input={input}
                     status={status}
                     thinking={thinking}
                     setThinking={setThinking}
-                    setInput={setInput}
+                    reload={errorReloadCallback}
                     append={append}
-                    reload={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}
                     stop={stop}
                     id={searchParams.get("id") || id}
                 />
             </div>
-            {/* <DebugInfo /> */}
         </motion.div>
-    );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    function DebugInfo() {
-        return (
-            <div className="right-4 bottom-4 fixed flex flex-col gap-2 bg-zinc-800 p-2 border-white/15 border-t rounded-2xl">
-                <Link href="/" className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer">Home</Link>
-                <div className="bg-white/15 mx-2 h-px"></div>
-                <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">INPUT: {JSON.stringify(input)}</p>
-                <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">TOKENS: {totalTokens}</p>
-                <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">STATUS: {status}</p>
-                <p className="bg-zinc-700 px-12 py-1 rounded-xl font-mono">THINKING: {JSON.stringify(thinking)}</p>
-                <div className="bg-white/15 mx-2 h-px"></div>
-                <button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => setMessages([])}>Clear</button>
-                <button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => reload({ body: { model: thinking ? "o4-mini" : "gpt-4.1-nano" } })}>Reload</button>
-                <button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => stop()}>Stop</button>
-                <button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={() => window.navigator.clipboard.writeText(JSON.stringify(messages))}>Copy Messages</button>
-                <button className="bg-zinc-700 hover:bg-zinc-600 px-3 py-1 rounded-xl duration-150 cursor-pointer" onClick={async () => {
-                    const text = await window.navigator.clipboard.readText()
-                    setMessages(JSON.parse(text))
-                }}>Paste Messages</button>
-            </div>
-        )
-    }
+    )
 }
 
 // [ x ] add retry button on all messages
 // [ x ] add a edit button to user messages
 // [ x ] error handling
 // [ x ] make the input box get taller as more content is added
-// [  ] add support for images
-// [  ] add support for multiple chats
-// [  ] add new chat button
+// [ x ] add support for images
+// [ x ] add support for multiple chats
+// [ x ] add new chat button
 // [  ] add auto scrolling as the chat gets longer
 
 

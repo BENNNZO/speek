@@ -8,16 +8,19 @@ import Message from "./Message";
 interface Props {
     messages: UIMessage[],
     status: string,
-    reload: () => void,
+    errorReload: () => void,
     reloadFunction: (id: string) => void,
     editFunction: (id: string, content: string) => void,
     loading: boolean
 }
 
-export default memo(function Messages({ messages, status, reload, reloadFunction, editFunction, loading }: Props) {
+export default memo(function Messages({ messages, status, errorReload, reloadFunction, editFunction, loading }: Props) {
     const messagesContainerRef = useRef<HTMLDivElement | null>(null)
 
+    console.log("Messages render", { messages, status, errorReload, reloadFunction, editFunction, loading });
+
     useEffect(() => {
+        console.log("Messages rerender")
         if (messagesContainerRef?.current) {
             messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
         }
@@ -38,7 +41,7 @@ export default memo(function Messages({ messages, status, reload, reloadFunction
                 {status === "error" &&
                     <div className="flex justify-between items-center bg-red-900/25 py-2 pr-2 pl-5 border border-red-900/50 rounded-full w-full">
                         <p>An unexpected error has occured!</p>
-                        <button onClick={() => reload()} className="flex gap-2 bg-red-950 px-4 py-1 border-t border-t-white/15 rounded-full cursor-pointer">
+                        <button onClick={() => errorReload()} className="flex gap-2 bg-red-950 px-4 py-1 border-t border-t-white/15 rounded-full cursor-pointer">
                             <p>Retry</p>
                             <Image src="/refresh.svg" width={20} height={20} alt="refresh icon" className="invert" />
                         </button>

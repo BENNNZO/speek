@@ -7,11 +7,9 @@ import Image from "next/image"
 import Link from "next/link"
 
 interface Props {
-    input: string,
     status: "submitted" | "streaming" | "ready" | "error",
     thinking: boolean,
     setThinking: React.Dispatch<React.SetStateAction<boolean>>,
-    setInput: React.Dispatch<React.SetStateAction<string>>,
     append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>
     reload: () => void
     stop: () => void
@@ -25,11 +23,12 @@ const animationProps = {
     exit: { opacity: 0, scale: 0.75, transition: { duration: 0.1 } }
 }
 
-export default function InputArea({ thinking, setThinking, input, setInput, append, status, stop, reload, id }: Props) {
+export default function InputArea({ thinking, setThinking, append, status, stop, reload, id }: Props) {
     // Refs for textarea and file input
     const inputRef = useRef<HTMLTextAreaElement | null>(null)
     const fileInputRef = useRef<HTMLInputElement | null>(null)
-    const [newChatUUID, setNewChatUUID] = useState('')
+    const [newChatUUID, setNewChatUUID] = useState("")
+    const [input, setInput] = useState("")
 
     // State for attached files
     const [files, setFiles] = useState<{ id: string, file: File }[] | undefined>(undefined)
