@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { Message, CreateMessage, ChatRequestOptions } from "ai"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 
 interface Props {
     input: string,
@@ -28,9 +29,14 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
     // Refs for textarea and file input
     const inputRef = useRef<HTMLTextAreaElement | null>(null)
     const fileInputRef = useRef<HTMLInputElement | null>(null)
+    const [newChatUUID, setNewChatUUID] = useState('')
 
     // State for attached files
     const [files, setFiles] = useState<{ id: string, file: File }[] | undefined>(undefined)
+
+    useEffect(() => {
+        setNewChatUUID(crypto.randomUUID())
+    }, [])
 
     // Auto-resize textarea based on input
     useEffect(() => {
@@ -203,7 +209,11 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
             <div className="flex justify-between">
                 <div className="flex gap-2">
                     {/* New chat button (no handler) */}
-                    <button className="bg-zinc-600 hover:bg-zinc-500 rounded-full size-[40px] duration-150 cursor-pointer">
+                    <Link
+                        href={`/chat?id=${newChatUUID}`}
+                        className="place-items-center grid bg-zinc-600 hover:bg-zinc-500 rounded-full size-[40px] duration-150 cursor-pointer"
+                        onClick={() => setNewChatUUID(crypto.randomUUID())}
+                    >
                         <Image
                             src="/add.svg"
                             width={28}
@@ -211,7 +221,7 @@ export default function InputArea({ thinking, setThinking, input, setInput, appe
                             alt="new chat"
                             className="invert m-auto"
                         />
-                    </button>
+                    </Link>
                     {/* Attach file button */}
                     <button
                         className="bg-zinc-600 hover:bg-zinc-500 rounded-full size-[40px] duration-150 cursor-pointer"
