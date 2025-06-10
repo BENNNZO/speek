@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 export default async function ChatPage() {
     const session = await auth()
 
-    if (!session?.user) redirect("/")
+    if (!session?.user) redirect("/auth")
 
     return (
         <ClientContainer />
