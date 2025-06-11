@@ -9,6 +9,7 @@ import Link from "next/link"
 interface Props {
     status: "submitted" | "streaming" | "ready" | "error",
     thinking: boolean,
+    noMessages: boolean,
     setThinking: React.Dispatch<React.SetStateAction<boolean>>,
     append: (message: Message | CreateMessage, chatRequestOptions?: ChatRequestOptions) => Promise<string | null | undefined>
     reload: () => void
@@ -23,7 +24,7 @@ const animationProps = {
     exit: { opacity: 0, scale: 0.75, transition: { duration: 0.1 } }
 }
 
-export default function InputArea({ thinking, setThinking, append, status, stop, reload, id }: Props) {
+export default function InputArea({ thinking, setThinking, append, status, stop, reload, id, noMessages }: Props) {
     // Refs for textarea and file input
     const inputRef = useRef<HTMLTextAreaElement | null>(null)
     const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -132,7 +133,15 @@ export default function InputArea({ thinking, setThinking, append, status, stop,
     }
 
     return (
-        <div className="bottom-4 left-1/2 absolute flex flex-col gap-2 bg-zinc-800 p-2 rounded-3xl -translate-x-1/2 pointer-events-auto bo/20">
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{
+                opacity: 1,
+                top: noMessages ? "50%" : "calc(100% - 7.5rem)",
+                translateY: noMessages ? "-50%" : "0%"
+            }}
+            className="left-1/2 absolute flex flex-col gap-2 bg-zinc-800 p-2 rounded-3xl -translate-x-1/2 pointer-events-auto"
+        >
             {/* Textarea for user input */}
             <textarea
                 ref={inputRef}
@@ -311,6 +320,6 @@ export default function InputArea({ thinking, setThinking, append, status, stop,
                     </AnimatePresence>
                 </motion.button>
             </div>
-        </div>
+        </motion.div>
     )
 }

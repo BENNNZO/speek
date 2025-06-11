@@ -18,6 +18,7 @@ export default function ClientContainer() {
     const [thinking, setThinking] = useState<boolean>(false)
     const [sidebar, setSidebar] = useState<boolean>(true)
     const [loadingMessages, setLoadingMessages] = useState<boolean>(false)
+    const [noMessages, setNoMessages] = useState(true)
 
     // update chatlog when the id in the url changes
     useEffect(() => {
@@ -40,6 +41,12 @@ export default function ClientContainer() {
     const messagesRef = useRef(messages)
     useEffect(() => {
         messagesRef.current = messages
+
+        if (messages.length === 0) {
+            setNoMessages(true)
+        } else {
+            setNoMessages(false)
+        }
     }, [messages])
 
     // callback function for quickly retrying the last message in the chat
@@ -103,6 +110,7 @@ export default function ClientContainer() {
                 />
                 <Gradients color="black" />
                 <InputArea
+                    noMessages={noMessages}
                     status={status}
                     thinking={thinking}
                     setThinking={setThinking}
