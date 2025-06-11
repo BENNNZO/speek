@@ -23,7 +23,7 @@ export default memo(function Message({ message, reloadFunction, editFunction }: 
                     >
                         <div className="flex flex-col gap-2">
                             {message?.experimental_attachments &&
-                                <div className="flex gap-2">
+                                <div className="flex self-end gap-2">
                                     {message?.experimental_attachments
                                         ?.filter(attachment =>
                                             attachment?.contentType?.startsWith('image/'),

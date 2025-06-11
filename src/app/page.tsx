@@ -14,6 +14,9 @@ export default function Home() {
 	);
 }
 
-// auth
-// db
-// prisma orm
+// save images / attachments (only file type and name to save space) in db
+// make the chat id system more robust
+// added names to chats instead of just ID's
+// make sure editing and everything works with db
+// when adding editing to db functionality make it delete unused chats
+// same for retry messages
