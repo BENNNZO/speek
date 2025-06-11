@@ -32,7 +32,7 @@ export default function InputArea({ thinking, setThinking, append, status, stop,
     const [input, setInput] = useState("")
 
     // State for attached files
-    const [files, setFiles] = useState<{ id: string, file: File }[] | undefined>(undefined)
+    const [files, setFiles] = useState<{ id: string, file: File }[]>([])
 
     useEffect(() => {
         setNewChatUUID(crypto.randomUUID())
@@ -80,9 +80,7 @@ export default function InputArea({ thinking, setThinking, append, status, stop,
     function handleAttachmentDelete(index: number) {
         if (!files) return
 
-        setFiles(prev => {
-            if (prev) return prev.filter((_, fileIndex) => index !== fileIndex)
-        })
+        setFiles(prev => prev.filter((_, fileIndex) => index !== fileIndex))
     }
 
     // // Prepare files for submission as FileList
@@ -115,7 +113,7 @@ export default function InputArea({ thinking, setThinking, append, status, stop,
                 }
             )
 
-            setFiles(undefined);
+            setFiles([]);
 
             // Reset file input value
             if (fileInputRef.current) {
@@ -165,7 +163,7 @@ export default function InputArea({ thinking, setThinking, append, status, stop,
                         // Only allow up to 5 files in total
                         if (event.target.files.length <= 5 - (files?.length ?? 5)) {
                             setFiles(prev => [
-                                ...(prev ?? []),
+                                ...prev,
                                 ...Array.from(event.target.files as FileList).map(file => ({ id: crypto.randomUUID(), file }))
                             ]);
                         }
@@ -173,7 +171,7 @@ export default function InputArea({ thinking, setThinking, append, status, stop,
                 }}
                 accept="image/jpeg,.jpeg,.jpg,image/png,.png,image/webp,.webp,text/plain,.txt,.eml,.xml,text/html,.html,text/markdown,.md,text/csv,.csv,text/tab-separated-values,.tsv,application/rtf,.rtf,application/pdf,.pdf,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx,application/vnd.ms-powerpoint,.ppt,application/vnd.openxmlformats-officedocument.presentationml.presentation,.pptx,application/vnd.oasis.opendocument.text,.odt,application/epub+zip,.epub,application/vnd.ms-excel,.xlsx,application/vnd.ms-outlook,.msg,text/x-rst,.rst"
             />
-            {/* Preview of attached images */}
+            {/* Preview of attached files */}
             <div className="bottom-[calc(100%+1rem)] left-0 absolute flex gap-2 h-24">
                 {files && (files.length > 0) && <p className="bottom-[calc(100%+0.5rem)] left-0 absolute font-semibold text-zinc-600 whitespace-nowrap">{files.length} / 5</p>}
                 <AnimatePresence mode="popLayout">
@@ -209,7 +207,41 @@ export default function InputArea({ thinking, setThinking, append, status, stop,
                                     className="rounded-2xl size-24 object-cover"
                                 />
                             </motion.div>
-                        ) : null
+                        ) : (
+                            <motion.div
+                                layout
+                                key={fileObject.id}
+                                initial={{ scale: 0.9, opacity: 0.5 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.5, opacity: 0 }}
+                                className="group relative flex flex-col justify-between p-1 border-2 border-white/15 rounded-2xl w-32 h-24 overflow-hidden text-sm"
+                            >
+                                {/* Delete button for image */}
+                                <button
+                                    className="top-2 right-2 absolute bg-zinc-600 opacity-0 group-hover:opacity-100 rounded-full duration-150 cursor-pointer"
+                                    onClick={() => handleAttachmentDelete(index)}
+                                >
+                                    <Image
+                                        src="/close.svg"
+                                        width={24}
+                                        height={24}
+                                        alt="delete image"
+                                        className="invert"
+                                    />
+                                </button>
+                                <p className="px-2 py-1 rounded-xl truncate">{fileObject.file.name}</p>
+                                <div className="flex items-center gap-2 p-1 rounded-xl">
+                                    <Image
+                                        src="/document.svg"
+                                        width={24}
+                                        height={24}
+                                        alt="delete image"
+                                        className="invert"
+                                    />
+                                    <p>{fileObject.file.name.substring(fileObject.file.name.lastIndexOf('.') + 1).toUpperCase()}</p>
+                                </div>
+                            </motion.div>
+                        )
                     )}
                 </AnimatePresence>
             </div>
