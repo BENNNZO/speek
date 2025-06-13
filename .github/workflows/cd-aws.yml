@@ -35,7 +35,7 @@ env:
   ECR_REPOSITORY: bennnnzo/speek                                                        # set this to your Amazon ECR repository name
   ECS_SERVICE: speek-prod-task-service-3c4bd9tw                                         # set this to your Amazon ECS service name
   ECS_CLUSTER: speek-cluster                                                            # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: speek-prod-task:1                                                # set this to the path to your Amazon ECS task definition
+  ECS_TASK_ARN: arn:aws:ecs:us-east-2:961156486325:task-definition/speek-prod-task:1    # set this to the path to your Amazon ECS task definition
                                                                                         # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: speek-container                                                       # set this to the name of the container in the
                                                                                         # containerDefinitions section of your task definition
@@ -60,7 +60,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-    - name: Login to Amazon ECR
+    - name: Login to Amazon ECRq
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
@@ -81,7 +81,7 @@ jobs:
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        task-definition-arn: ${{ env.ECS_TASK_ARN }}
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
 
