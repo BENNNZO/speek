@@ -21,9 +21,9 @@ export default function SideBar({ state, setLoading }: { state: boolean, setLoad
             >
                 <div className="flex flex-col gap-2 p-1.5">
                     <p className="opacity-50 pt-2 pl-1.5">Links</p>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">Home</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">Account</button>
-                    <button className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">Settings</button>
+                    <Link href="/" className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">Home</Link>
+                    <Link href="/account" className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">Account</Link>
+                    <Link href="/settings" className="hover:bg-zinc-700 px-2 py-1.5 rounded-xl overflow-hidden text-left text-ellipsis">Settings</Link>
                 </div>
                 <div className="flex flex-col gap-2 p-1.5">
                     <p className="opacity-50 pt-2 pl-1.5">Quick Prompts</p>
