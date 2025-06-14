@@ -25,7 +25,7 @@ export default function SideAnimations({ lineHeight, gap, delay, duration, width
 
     return (
         <div className="fixed inset-0">
-            <div className="top-0 left-0 absolute flex flex-col justify-between bg-black w-76 h-full" style={{ padding: gap }}>
+            <div className="top-0 left-0 absolute flex flex-col justify-between w-76 h-full" style={{ padding: gap }}>
                 <AnimatePresence>
                     {lineCount && [...Array(lineCount)].map((_, index) => (
                         <motion.div
