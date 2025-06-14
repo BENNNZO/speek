@@ -21,6 +21,32 @@ export default function Home() {
 					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">Features</p>
 					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">Why Choose Speek</p>
 					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
 				</div>
 			</div>
 		</div>

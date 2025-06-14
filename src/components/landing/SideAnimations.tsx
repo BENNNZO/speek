@@ -1,10 +1,16 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { AnimatePresence, delay, motion } from "framer-motion"
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion"
 
 export default function SideAnimations({ lineHeight, gap, delay, duration, widthVariation }: { lineHeight: number, gap: number, delay: number, duration: number, widthVariation: number }) {
     const [lineCount, setLineCount] = useState<number | null>(null)
+
+    const { scrollY } = useScroll()
+
+    const scrollYTransoformOpacity = useTransform(scrollY, [0, 250], [1, 0])
+    const scrollYTransoformPosition = useTransform(scrollY, [0, 250], [0, 100])
+    const scrollYTransoformPositionNeg = useTransform(scrollY, [0, 250], [0, -100])
 
     useEffect(() => {
         const screenHeight = window.innerHeight
@@ -25,7 +31,14 @@ export default function SideAnimations({ lineHeight, gap, delay, duration, width
 
     return (
         <div className="fixed inset-0">
-            <div className="top-0 left-0 absolute flex flex-col justify-between w-76 h-full" style={{ padding: gap }}>
+            <motion.div
+                className="top-0 left-0 absolute flex flex-col justify-between w-76 h-full"
+                style={{
+                    opacity: scrollYTransoformOpacity || 1,
+                    x: scrollYTransoformPositionNeg || 0,
+                    padding: gap
+                }}
+            >
                 <AnimatePresence>
                     {lineCount && [...Array(lineCount)].map((_, index) => (
                         <motion.div
@@ -53,8 +66,15 @@ export default function SideAnimations({ lineHeight, gap, delay, duration, width
                         />
                     ))}
                 </AnimatePresence>
-            </div>
-            <div className="top-0 right-0 absolute flex flex-col justify-between bg-black w-76 h-full" style={{ padding: gap }}>
+            </motion.div>
+            <motion.div
+                className="top-0 right-0 absolute flex flex-col justify-between w-76 h-full"
+                style={{
+                    opacity: scrollYTransoformOpacity || 1,
+                    x: scrollYTransoformPosition || 0,
+                    padding: gap
+                }}
+            >
                 <AnimatePresence>
                     {lineCount && [...Array(lineCount)].map((_, index) => (
                         <motion.div
@@ -82,7 +102,12 @@ export default function SideAnimations({ lineHeight, gap, delay, duration, width
                         />
                     ))}
                 </AnimatePresence>
-            </div>
+            </motion.div>
         </div>
     )
 }
+
+
+
+// ass you scroll the lines fade from bottom to top
+// use useTransform inline styles if possible if not probably dont do this
