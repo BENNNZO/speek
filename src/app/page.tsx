@@ -9,16 +9,20 @@ export default function Home() {
 			<SideAnimations
 				lineHeight={30}
 				gap={10}
-				duration={0.35}
-				widthVariation={25} />
-			<Hero />
-			{/* <Link data-testid="chat-page-button" href="/chat" className="bg-zinc-800 px-4 py-1 border border-white/15 rounded-full">Chat Page</Link>
-			<div className="flex flex-col gap-2 mt-12">
-				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">Hero</p>
-				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">Features</p>
-				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">Why Choose Speek</p>
-				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
-			</div> */}
+				duration={1.5}
+				delay={0.35}
+				widthVariation={25}
+			/>
+			<div className="px-76">
+				<Hero />
+				<Link data-testid="chat-page-button" href="/chat" className="bg-zinc-800 px-4 py-1 border border-white/15 rounded-full">Chat Page</Link>
+				<div className="flex flex-col gap-2 mt-12">
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">Hero</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">Features</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">Why Choose Speek</p>
+					<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">FAQ</p>
+				</div>
+			</div>
 		</div>
 	);
 }

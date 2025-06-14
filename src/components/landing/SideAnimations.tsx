@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { AnimatePresence, delay, motion } from "framer-motion"
 
-export default function SideAnimations({ lineHeight, gap, duration, widthVariation }: { lineHeight: number, gap: number, duration: number, widthVariation: number }) {
+export default function SideAnimations({ lineHeight, gap, delay, duration, widthVariation }: { lineHeight: number, gap: number, delay: number, duration: number, widthVariation: number }) {
     const [lineCount, setLineCount] = useState<number | null>(null)
 
     useEffect(() => {
@@ -18,7 +18,7 @@ export default function SideAnimations({ lineHeight, gap, duration, widthVariati
             setTimeout(() => {
                 setLineCount(lineCount)
             }, 500)
-        }, duration * 1000 * lineCount + 500)
+        }, delay * 1000 * lineCount + 500)
 
         return () => clearInterval(animationResetInterval)
     }, [])
@@ -30,11 +30,26 @@ export default function SideAnimations({ lineHeight, gap, duration, widthVariati
                     {lineCount && [...Array(lineCount)].map((_, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, width: "0%" }}
-                            animate={{ opacity: 1, width: `${(Math.random() * widthVariation) + (90 - widthVariation)}%`, transition: { duration, delay: duration * index } }}
-                            exit={{ opacity: 0 }}
+                            initial={{
+                                opacity: 0,
+                                width: "0%"
+                            }}
+                            animate={{
+                                opacity: 1,
+                                width: `${(Math.random() * widthVariation) + (90 - widthVariation)}%`,
+                                transition: {
+                                    duration,
+                                    delay: delay * index,
+                                    ease: "anticipate"
+                                }
+                            }}
+                            exit={{
+                                opacity: 0
+                            }}
+                            style={{
+                                height: lineHeight
+                            }}
                             className={`rounded-xl ${Math.random() > 0.8 ? "self-end bg-zinc-800" : "self-start bg-zinc-900"}`}
-                            style={{ height: lineHeight }}
                         />
                     ))}
                 </AnimatePresence>
@@ -44,11 +59,26 @@ export default function SideAnimations({ lineHeight, gap, duration, widthVariati
                     {lineCount && [...Array(lineCount)].map((_, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, width: "50%" }}
-                            animate={{ opacity: 1, width: `${(Math.random() * widthVariation) + (90 - widthVariation)}%`, transition: { duration, delay: duration * index } }}
-                            exit={{ opacity: 0 }}
+                            initial={{
+                                opacity: 0,
+                                width: "0%"
+                            }}
+                            animate={{
+                                opacity: 1,
+                                width: `${(Math.random() * widthVariation) + (90 - widthVariation)}%`,
+                                transition: {
+                                    duration,
+                                    delay: delay * index,
+                                    ease: "anticipate"
+                                }
+                            }}
+                            exit={{
+                                opacity: 0
+                            }}
+                            style={{
+                                height: lineHeight
+                            }}
                             className={`rounded-xl ${Math.random() > 0.8 ? "self-end bg-zinc-800" : "self-start bg-zinc-900"}`}
-                            style={{ height: lineHeight }}
                         />
                     ))}
                 </AnimatePresence>
