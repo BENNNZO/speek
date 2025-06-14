@@ -1,16 +1,18 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion"
+import { AnimatePresence, motion, useScroll, useTransform, useSpring } from "framer-motion"
 
 export default function SideAnimations({ lineHeight, gap, delay, duration, widthVariation }: { lineHeight: number, gap: number, delay: number, duration: number, widthVariation: number }) {
     const [lineCount, setLineCount] = useState<number | null>(null)
 
     const { scrollY } = useScroll()
 
-    const scrollYTransoformOpacity = useTransform(scrollY, [0, 250], [1, 0])
-    const scrollYTransoformPosition = useTransform(scrollY, [0, 250], [0, 100])
-    const scrollYTransoformPositionNeg = useTransform(scrollY, [0, 250], [0, -100])
+    const smoothScrollY = useSpring(scrollY, { damping: 20, stiffness: 100, mass: 0.5 })
+
+    const scrollYTransoformOpacity = useTransform(smoothScrollY, [0, 500], [1, 0])
+    const scrollYTransoformPosition = useTransform(smoothScrollY, [0, 500], [0, 100])
+    const scrollYTransoformPositionNeg = useTransform(smoothScrollY, [0, 500], [0, -100])
 
     useEffect(() => {
         const screenHeight = window.innerHeight
