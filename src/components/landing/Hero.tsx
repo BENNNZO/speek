@@ -5,13 +5,44 @@ import Image from "next/image"
 
 export default function Hero() {
     return (
-        <div className="flex flex-col justify-center items-center gap-20 h-screen">
-            <div className="relative flex flex-col gap-4">
+        <div className="flex flex-col justify-center items-center gap-16 h-screen">
+            <div className="relative flex flex-col items-center gap-8">
                 <CostEffectiveAIChat />
                 <div className="flex gap-12">
                     <FadeLetters text="Speek" />
                     <AI />
                 </div>
+                <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.5, transition: { delay: 0.8 } }}
+                    className="mt-4 text-2xl text-center"
+                >
+                    Just An AI Chat. Noting More. Nothing Less.
+                </motion.p>
+                <div className="flex gap-4">
+                    <motion.button
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1, transition: { delay: 1 } }}
+                        className="flex gap-2 bg-white px-4 py-2 rounded-xl font-semibold text-black text-lg cursor-pointer"
+                    >
+                        <p className="tracking-wide">Try Speek Free</p>
+                        <Image
+                            src="/arrow-forward.svg"
+                            width={24}
+                            height={24}
+                            alt="arrow"
+                        />
+                    </motion.button>
+                    <motion.button
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1, transition: { delay: 1.2 } }}
+                        className="flex gap-2 bg-gradient-to-br from-indigo-800 to-indigo-950 px-4 py-2 border-t border-t-white/35 rounded-xl font-semibold text-lg cursor-pointer"
+                    >
+                        <p className="tracking-wide">Why Choose Speek</p>
+                    </motion.button>
+                </div>
+            </div>
+            <div className="flex flex-col items-center gap-8">
             </div>
             <Image
                 src="/chevron-down.svg"
@@ -29,7 +60,7 @@ function CostEffectiveAIChat() {
         <motion.p
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1, transition: { delay: 0.6 } }}
-            className="bottom-[calc(100%+2rem)] left-1/2 absolute flex gap-1 bg-gradient-to-r from-indigo-700 to-indigo-950 px-4 py-1 border-t border-t-white/25 rounded-full -translate-x-1/2"
+            className="bottom-[calc(100%+3rem)] left-1/2 absolute flex gap-1 bg-gradient-to-r from-indigo-700 to-indigo-950 px-4 py-1 border-t border-t-white/25 rounded-full -translate-x-1/2"
         >
             {"#1 Cost Effective AI Chat".split(" ").map((word, index) => (
                 <motion.span
