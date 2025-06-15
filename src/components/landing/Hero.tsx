@@ -7,6 +7,7 @@ export default function Hero() {
     return (
         <div className="flex flex-col justify-center items-center gap-16 h-screen">
             <div className="relative flex flex-col items-center gap-8">
+                {/* MARKET TEXT (#1 Cost Effective AI Chat) */}
                 <motion.p
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1, transition: { delay: 0.6 } }}
@@ -21,10 +22,14 @@ export default function Hero() {
                     />
                     <FadeEachWord text="#1 Cost Effective AI Chat" />
                 </motion.p>
+
+                {/* HEADER / PRODUCT NAME */}
                 <div className="z-10 flex gap-12">
                     <FadeLetters text="Speek" />
                     <AI />
                 </div>
+
+                {/* SUB TEXT */}
                 <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.75, transition: { delay: 0.8 } }}
@@ -32,6 +37,8 @@ export default function Hero() {
                 >
                     <FadeEachWord text="Just An AI Chat. Noting More. Nothing Less." />
                 </motion.p>
+
+                {/* CTA BUTTON */}
                 <div className="z-10 flex gap-4">
                     <motion.button
                         initial={{ opacity: 0, scale: 0.8 }}
@@ -58,6 +65,8 @@ export default function Hero() {
                         <p className="tracking-wide">Why Choose Speek</p>
                     </motion.button>
                 </div>
+
+                {/* COLOR BUBBLES */}
                 <div className="z-0 absolute inset-0">
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="top-1/2 left-1/2 absolute bg-indigo-700 blur-3xl rounded-[100%] w-md h-24 -rotate-[20deg] scale-125 -translate-1/2"></motion.div>
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="top-1/2 left-1/2 absolute bg-indigo-500 blur-lg rounded-[100%] w-sm h-2 -rotate-[20deg] scale-125 -translate-1/2"></motion.div>
@@ -68,6 +77,8 @@ export default function Hero() {
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="top-1/4 left-11/12 absolute bg-indigo-800/50 blur-2xl rounded-[100%] w-40 h-24 rotate-45 -translate-1/2"></motion.div>
                 </div>
             </div>
+
+            {/* SCROLL CTA */}
             <Image
                 src="/chevron-down.svg"
                 width={32}
