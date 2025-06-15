@@ -31,9 +31,9 @@ export default function Hero() {
                         animate={{ opacity: 1, scale: 1, transition: { delay: 1 } }}
                         whileHover={{ y: -2, filter: "brightness(1.25)" }}
                         whileTap={{ y: 0 }}
-                        className="flex gap-2 bg-white shadow-lg px-4 py-2 rounded-full font-semibold text-black text-lg cursor-pointer"
+                        className="flex gap-2 bg-white shadow-lg py-2 pr-4 pl-5 rounded-full font-semibold text-black text-lg cursor-pointer"
                     >
-                        <p className="tracking-wide">Try <span className="font-bold">Speek</span> Free</p>
+                        <p className="tracking-wide">Try Speek Free</p>
                         <Image
                             src="/arrow-forward.svg"
                             width={24}

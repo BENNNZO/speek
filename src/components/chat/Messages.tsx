@@ -47,7 +47,7 @@ export default memo(function Messages({ messages, status, errorReload, reloadFun
 
                 {/* LOADING MESSAGES */}
                 {loading &&
-                    <div className="top-0 left-0 absolute place-items-center grid bg-black w-full h-screen">
+                    <div className="top-0 left-0 absolute place-items-center grid bg-zinc-950 w-full h-screen">
                         <Image src="/loader.svg" width={35} height={35} alt="loader" />
                     </div>
                 }

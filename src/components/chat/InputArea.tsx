@@ -280,15 +280,41 @@ export default function InputArea({ thinking, setThinking, append, status, stop,
                     {/* Toggle "thinking" mode */}
                     <button
                         onClick={() => setThinking(prev => !prev)}
-                        className={`flex items-center gap-1 pr-4 pl-2 rounded-full cursor-pointer ${thinking ? "bg-blue-600 hover:bg-blue-500" : "bg-zinc-600 text-zinc-400 hover:text-white hover:bg-zinc-500"} duration-150`}
+                        className={`flex items-center gap-1 pr-4 pl-1 rounded-full cursor-pointer ${thinking ? "bg-blue-600 hover:bg-blue-500" : "bg-zinc-600 hover:bg-zinc-500"} duration-150`}
                     >
-                        <Image
-                            src="/bulb.svg"
-                            width={28}
-                            height={28}
-                            alt="submit"
-                            className={`invert m-auto p-1 ${thinking ? "opacity-100" : "opacity-50"} duration-300`}
-                        />
+                        <AnimatePresence mode="popLayout">
+                            {thinking ? (
+                                <motion.div
+                                    key="thinking-on"
+                                    initial={{ scale: 0.5, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    exit={{ scale: 0.5, opacity: 0 }}
+                                >
+                                    <Image
+                                        src="/bulb-on.svg"
+                                        width={32}
+                                        height={32}
+                                        alt="thinking icons"
+                                        className="invert m-auto p-1 duration-300"
+                                    />
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="thinking-off"
+                                    initial={{ scale: 0.5, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    exit={{ scale: 0.5, opacity: 0 }}
+                                >
+                                    <Image
+                                        src="/bulb-off.svg"
+                                        width={32}
+                                        height={32}
+                                        alt="thinking icons"
+                                        className="bottom-0.5 relative invert m-auto p-1 duration-300"
+                                    />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                         <p>Reason</p>
                     </button>
                 </div>
@@ -352,6 +378,6 @@ export default function InputArea({ thinking, setThinking, append, status, stop,
                     </AnimatePresence>
                 </motion.button>
             </div>
-        </motion.div>
+        </motion.div >
     )
 }
