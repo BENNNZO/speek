@@ -27,8 +27,8 @@ export default function AuthPage() {
 
     return (
         <div className="place-items-center grid w-screen h-screen">
-            <div className="z-10 relative flex flex-col gap-4 bg-gradient-to-b from-zinc-950 to-transparent backdrop-blur-sm mb-24 sm:mb-0 p-4 rounded-3xl overflow-hidden bt">
-                <div className="-top-12 left-0 absolute bg-indigo-800/80 blur-3xl rounded-[100%] w-full h-24"></div>
+            <div className="z-10 relative flex flex-col gap-4 bg-gradient-to-b from-zinc-900 to-transparent backdrop-blur-sm mb-24 sm:mb-0 p-4 rounded-3xl overflow-hidden bt">
+                <div className="-top-12 left-0 absolute bg-indigo-600 blur-3xl rounded-[100%] w-full h-24"></div>
                 <AnimatePresence mode="wait">
                     <motion.h1
                         key={newUser ? "sign-up" : "sign-in"}

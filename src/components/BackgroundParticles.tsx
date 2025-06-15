@@ -70,7 +70,7 @@ export default function BackgroundParticles() {
     );
 
     if (init) return (
-        <div className="fixed inset-0">
+        <div className="fixed inset-0 pointer-events-none">
             <Particles options={options} />
         </div>
     )
