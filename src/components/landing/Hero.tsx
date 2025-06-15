@@ -8,24 +8,26 @@ export default function Hero() {
         <div className="flex flex-col justify-center items-center gap-16 h-screen">
             <div className="relative flex flex-col items-center gap-8">
                 <CostEffectiveAIChat />
-                <div className="flex gap-12">
+                <div className="z-10 flex gap-12">
                     <FadeLetters text="Speek" />
                     <AI />
                 </div>
                 <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.5, transition: { delay: 0.8 } }}
-                    className="mt-4 text-2xl text-center"
+                    className="z-10 mt-4 text-2xl text-center"
                 >
                     Just An AI Chat. Noting More. Nothing Less.
                 </motion.p>
-                <div className="flex gap-4">
+                <div className="z-10 flex gap-4">
                     <motion.button
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1, transition: { delay: 1 } }}
-                        className="flex gap-2 bg-white px-4 py-2 rounded-xl font-semibold text-black text-lg cursor-pointer"
+                        whileHover={{ y: -2 }}
+                        whileTap={{ y: 0 }}
+                        className="flex gap-2 bg-white px-4 py-2 rounded-full font-semibold text-black text-lg cursor-pointer"
                     >
-                        <p className="tracking-wide">Try Speek Free</p>
+                        <p className="tracking-wide">Try <span className="font-bold">Speek</span> Free</p>
                         <Image
                             src="/arrow-forward.svg"
                             width={24}
@@ -36,13 +38,19 @@ export default function Hero() {
                     <motion.button
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1, transition: { delay: 1.2 } }}
-                        className="flex gap-2 bg-gradient-to-br from-indigo-800 to-indigo-950 px-4 py-2 border-t border-t-white/35 rounded-xl font-semibold text-lg cursor-pointer"
+                        whileHover={{ y: -2 }}
+                        whileTap={{ y: 0 }}
+                        className="flex gap-2 bg-gradient-to-br from-indigo-800 to-indigo-950 px-4 py-2 border-t border-t-white/35 rounded-full font-semibold text-lg cursor-pointer"
                     >
-                        <p className="tracking-wide">Why Choose Speek</p>
+                        <p className="tracking-wide">Why Choose <span className="font-bold">Speek</span></p>
                     </motion.button>
                 </div>
-            </div>
-            <div className="flex flex-col items-center gap-8">
+                <div className="z-0 absolute inset-0">
+                    <div className="top-1/2 left-1/2 absolute bg-indigo-700 blur-3xl rounded-[100%] w-md h-24 -rotate-[20deg] -translate-1/2"></div>
+                    <div className="top-1/2 left-1/2 absolute bg-indigo-400 blur-lg rounded-[100%] w-sm h-1 -rotate-[20deg] -translate-1/2"></div>
+                    <div className="top-3/4 left-1/2 absolute bg-indigo-400 blur-2xl rounded-[100%] w-sm h-2 rotate-[20deg] -translate-1/2"></div>
+                    <div className="top-0 left-1/2 absolute bg-indigo-600 blur-2xl rounded-[100%] w-sm h-4 rotate-12 -translate-1/2"></div>
+                </div>
             </div>
             <Image
                 src="/chevron-down.svg"
@@ -83,9 +91,10 @@ function AI() {
             className="relative w-24"
         >
             <motion.div
-                initial={{ opacity: 0, background: "rgb(0, 0, 0)", width: "7.5rem", height: "7.5rem" }}
-                animate={{ opacity: 1, background: "rgb(255, 255, 255)", width: "8rem", height: "8rem", transition: { delay: 0.4 } }}
-                className="top-1/2 left-1/2 absolute place-items-center grid rounded-3xl -translate-1/2"
+                initial={{ opacity: 0, background: "rgb(0, 0, 0)", width: "7.5rem", height: "7.5rem", borderRadius: "1.5rem" }}
+                animate={{ opacity: 1, background: "rgb(255, 255, 255)", width: "8rem", height: "8rem", borderRadius: "1.5rem", transition: { delay: 0.4 } }}
+                whileHover={{ borderRadius: "2.5rem" }}
+                className="top-1/2 left-1/2 absolute place-items-center grid -translate-1/2"
             >
                 <motion.p
                     initial={{ color: "rgb(255, 255, 255)", fontSize: "6rem" }}
