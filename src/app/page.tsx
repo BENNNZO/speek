@@ -1,10 +1,13 @@
+
 import Link from "next/link";
 
+import BackgroundParticles from "@/components/BackgroundParticles";
 import Hero from "@/components/landing/Hero";
 
 export default function Home() {
 	return (
 		<div className="px-76">
+			<BackgroundParticles />
 			<Hero />
 			<Link data-testid="chat-page-button" href="/chat" className="bg-zinc-800 px-4 py-1 border border-white/15 rounded-full">Chat Page</Link>
 			<div className="flex flex-col gap-2 mt-12">

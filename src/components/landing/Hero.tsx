@@ -58,6 +58,7 @@ export default function Hero() {
                     <div className="top-3/4 left-1/2 absolute bg-indigo-400 blur-2xl rounded-[100%] w-sm h-2 rotate-[20deg] -translate-1/2"></div>
                     <div className="top-0 left-1/2 absolute bg-indigo-600 blur-2xl rounded-[100%] w-sm h-4 rotate-12 scale-110 -translate-1/2"></div>
                     <div className="top-full left-1/2 absolute bg-indigo-800/50 blur-2xl rounded-[100%] w-sm h-24 -translate-1/2"></div>
+                    <div className="top-1/4 left-11/12 absolute bg-indigo-800/50 blur-2xl rounded-[100%] w-40 h-24 rotate-45 -translate-1/2"></div>
                 </div>
             </div>
             <Image
@@ -95,14 +96,14 @@ function AI() {
             className="relative shadow-md w-24"
         >
             <motion.div
-                initial={{ opacity: 0, background: "rgb(0, 0, 0)", width: "7.5rem", height: "7.5rem", borderRadius: "1.5rem" }}
-                animate={{ opacity: 1, background: "rgb(255, 255, 255)", width: "8rem", height: "8rem", borderRadius: "1.5rem", transition: { delay: 0.4 } }}
+                initial={{ opacity: 0, background: "rgba(0, 0, 0, 0)", width: "7.5rem", height: "7.5rem", borderRadius: "1.5rem" }}
+                animate={{ opacity: 1, background: "rgba(0, 0, 0, 0.25)", width: "8rem", height: "8rem", borderRadius: "1.5rem", transition: { delay: 0.4 } }}
                 whileHover={{ borderRadius: "2.5rem" }}
-                className="top-1/2 left-1/2 absolute place-items-center grid -translate-1/2"
+                className="top-1/2 left-1/2 absolute place-items-center grid backdrop-blur-md border-t border-t-white/25 -translate-1/2"
             >
                 <motion.p
-                    initial={{ color: "rgb(255, 255, 255)", fontSize: "6rem" }}
-                    animate={{ color: "rgb(0, 0, 0)", fontSize: "5rem", transition: { delay: 0.4 } }}
+                    initial={{ fontSize: "6rem" }}
+                    animate={{ fontSize: "5rem", transition: { delay: 0.4 } }}
                     className="top-1/2 left-1/2 absolute font-bold -translate-1/2"
                 >
                     AI
