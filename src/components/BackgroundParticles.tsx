@@ -28,7 +28,7 @@ export default function BackgroundParticles() {
                         enable: true,
                         parallax: {
                             enable: true,
-                            force: 50,
+                            force: 40,
                             smooth: 25
                         }
                     },
@@ -36,7 +36,14 @@ export default function BackgroundParticles() {
             },
             particles: {
                 color: {
-                    value: "#ddc4ff",
+                    value: "#ffffff",
+                },
+                links: {
+                    color: "#ffffff",
+                    distance: 50,
+                    enable: true,
+                    opacity: 0.1,
+                    width: 1,
                 },
                 move: {
                     direction: MoveDirection.none,
