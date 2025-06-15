@@ -6,13 +6,13 @@ import SideAnimations from "@/components/landing/SideAnimations";
 export default function Home() {
 	return (
 		<div>
-			<SideAnimations
+			{/* <SideAnimations
 				lineHeight={30}
 				gap={10}
 				duration={1.5}
 				delay={0.2}
 				widthVariation={25}
-			/>
+			/> */}
 			<div className="px-76">
 				<Hero />
 				<Link data-testid="chat-page-button" href="/chat" className="bg-zinc-800 px-4 py-1 border border-white/15 rounded-full">Chat Page</Link>
