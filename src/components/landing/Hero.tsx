@@ -12,6 +12,13 @@ export default function Hero() {
                     animate={{ opacity: 1, scale: 1, transition: { delay: 0.6 } }}
                     className="bottom-[calc(100%+3rem)] left-1/2 absolute flex gap-1 bg-gradient-to-r from-indigo-700 to-indigo-950 drop-shadow-xl px-4 py-1 border-t border-t-white/25 rounded-full -translate-x-1/2"
                 >
+                    <Image
+                        src="/sparkles.svg"
+                        width={18}
+                        height={18}
+                        alt="sparkles"
+                        className="invert mr-1"
+                    />
                     <FadeEachWord text="#1 Cost Effective AI Chat" />
                 </motion.p>
                 <div className="z-10 flex gap-12">
@@ -52,13 +59,13 @@ export default function Hero() {
                     </motion.button>
                 </div>
                 <div className="z-0 absolute inset-0">
-                    <div className="top-1/2 left-1/2 absolute bg-indigo-700 blur-3xl rounded-[100%] w-md h-24 -rotate-[20deg] scale-125 -translate-1/2"></div>
-                    <div className="top-1/2 left-1/2 absolute bg-indigo-500 blur-lg rounded-[100%] w-sm h-2 -rotate-[20deg] scale-125 -translate-1/2"></div>
-                    <div className="top-1/2 left-1/2 absolute bg-indigo-400 blur-sm rounded-[100%] w-sm h-0.5 -rotate-[20deg] scale-125 -translate-1/2"></div>
-                    <div className="top-3/4 left-1/2 absolute bg-indigo-400 blur-2xl rounded-[100%] w-sm h-2 rotate-[20deg] -translate-1/2"></div>
-                    <div className="top-0 left-1/2 absolute bg-indigo-600 blur-2xl rounded-[100%] w-sm h-4 rotate-12 scale-110 -translate-1/2"></div>
-                    <div className="top-full left-1/2 absolute bg-indigo-800/50 blur-2xl rounded-[100%] w-sm h-24 -translate-1/2"></div>
-                    <div className="top-1/4 left-11/12 absolute bg-indigo-800/50 blur-2xl rounded-[100%] w-40 h-24 rotate-45 -translate-1/2"></div>
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="top-1/2 left-1/2 absolute bg-indigo-700 blur-3xl rounded-[100%] w-md h-24 -rotate-[20deg] scale-125 -translate-1/2"></motion.div>
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="top-1/2 left-1/2 absolute bg-indigo-500 blur-lg rounded-[100%] w-sm h-2 -rotate-[20deg] scale-125 -translate-1/2"></motion.div>
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="top-1/2 left-1/2 absolute bg-indigo-400 blur-sm rounded-[100%] w-sm h-0.5 -rotate-[20deg] scale-125 -translate-1/2"></motion.div>
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="top-3/4 left-1/2 absolute bg-indigo-400 blur-2xl rounded-[100%] w-sm h-2 rotate-[20deg] -translate-1/2"></motion.div>
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="top-0 left-1/2 absolute bg-indigo-600 blur-2xl rounded-[100%] w-sm h-4 rotate-12 scale-110 -translate-1/2"></motion.div>
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="top-full left-1/2 absolute bg-indigo-800/50 blur-2xl rounded-[100%] w-sm h-24 -translate-1/2"></motion.div>
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="top-1/4 left-11/12 absolute bg-indigo-800/50 blur-2xl rounded-[100%] w-40 h-24 rotate-45 -translate-1/2"></motion.div>
                 </div>
             </div>
             <Image
