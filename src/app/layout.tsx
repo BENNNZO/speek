@@ -21,7 +21,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${geistSans.className} antialiased bg-black text-white`}
+				className={`${geistSans.className} antialiased bg-zinc-950 text-white`}
 			>
 				<Suspense fallback={null}>
 					{children}
