@@ -35,7 +35,7 @@ export default function Hero() {
                     animate={{ opacity: 0.75, transition: { delay: 0.8 } }}
                     className="z-10 flex gap-1.5 mt-4 text-2xl text-center"
                 >
-                    <FadeEachWord text="Just An AI Chat. Noting More. Nothing Less." />
+                    <FadeEachWord text="Just AI Chat. Noting More. Nothing Less." />
                 </motion.p>
 
                 {/* CTA BUTTON */}
@@ -117,7 +117,7 @@ function AI() {
                 initial={{ opacity: 0, background: "rgba(0, 0, 0, 0)", width: "7.5rem", height: "7.5rem", borderRadius: "1.5rem" }}
                 animate={{ opacity: 1, background: "rgba(0, 0, 0, 0.25)", width: "8rem", height: "8rem", borderRadius: "1.5rem", transition: { delay: 0.4 } }}
                 whileHover={{ borderRadius: "2.5rem" }}
-                className="top-1/2 left-1/2 absolute place-items-center grid backdrop-blur-md border-t border-t-white/25 -translate-1/2"
+                className="top-1/2 left-1/2 absolute place-items-center grid backdrop-blur-md border-t border-t-white/15 -translate-1/2"
             >
                 <motion.p
                     initial={{ fontSize: "6rem" }}
