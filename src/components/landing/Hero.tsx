@@ -29,7 +29,7 @@ export default function Hero() {
                     <motion.button
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1, transition: { delay: 1 } }}
-                        whileHover={{ y: -2 }}
+                        whileHover={{ y: -2, filter: "brightness(1.25)" }}
                         whileTap={{ y: 0 }}
                         className="flex gap-2 bg-white shadow-lg px-4 py-2 rounded-full font-semibold text-black text-lg cursor-pointer"
                     >
@@ -44,11 +44,11 @@ export default function Hero() {
                     <motion.button
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1, transition: { delay: 1.2 } }}
-                        whileHover={{ y: -2 }}
+                        whileHover={{ y: -2, filter: "brightness(1.25)" }}
                         whileTap={{ y: 0 }}
                         className="flex gap-2 bg-gradient-to-br from-indigo-800 to-indigo-950 shadow-lg px-4 py-2 border-t border-t-white/35 rounded-full font-semibold text-lg cursor-pointer"
                     >
-                        <p className="tracking-wide">Why Choose <span className="font-bold">Speek</span></p>
+                        <p className="tracking-wide">Why Choose Speek</p>
                     </motion.button>
                 </div>
                 <div className="z-0 absolute inset-0">
