@@ -7,7 +7,13 @@ export default function Hero() {
     return (
         <div className="flex flex-col justify-center items-center gap-16 h-screen">
             <div className="relative flex flex-col items-center gap-8">
-                <CostEffectiveAIChat />
+                <motion.p
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1, transition: { delay: 0.6 } }}
+                    className="bottom-[calc(100%+3rem)] left-1/2 absolute flex gap-1 bg-gradient-to-r from-indigo-700 to-indigo-950 px-4 py-1 border-t border-t-white/25 rounded-full -translate-x-1/2"
+                >
+                    <FadeEachWord text="#1 Cost Effective AI Chat" />
+                </motion.p>
                 <div className="z-10 flex gap-12">
                     <FadeLetters text="Speek" />
                     <AI />
@@ -15,9 +21,9 @@ export default function Hero() {
                 <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.5, transition: { delay: 0.8 } }}
-                    className="z-10 mt-4 text-2xl text-center"
+                    className="z-10 flex gap-1.5 mt-4 text-2xl text-center"
                 >
-                    Just An AI Chat. Noting More. Nothing Less.
+                    <FadeEachWord text="Just An AI Chat. Noting More. Nothing Less." />
                 </motion.p>
                 <div className="z-10 flex gap-4">
                     <motion.button
@@ -63,14 +69,10 @@ export default function Hero() {
     )
 }
 
-function CostEffectiveAIChat() {
+function FadeEachWord({ text }: { text: string }) {
     return (
-        <motion.p
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1, transition: { delay: 0.6 } }}
-            className="bottom-[calc(100%+3rem)] left-1/2 absolute flex gap-1 bg-gradient-to-r from-indigo-700 to-indigo-950 px-4 py-1 border-t border-t-white/25 rounded-full -translate-x-1/2"
-        >
-            {"#1 Cost Effective AI Chat".split(" ").map((word, index) => (
+        <>
+            {text.split(" ").map((word, index) => (
                 <motion.span
                     key={index}
                     initial={{ opacity: 0 }}
@@ -79,7 +81,7 @@ function CostEffectiveAIChat() {
                     {word}
                 </motion.span>
             ))}
-        </motion.p>
+        </>
     )
 }
 
