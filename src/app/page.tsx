@@ -14,7 +14,7 @@ export default function Home() {
 			<Link data-testid="chat-page-button" href="/chat" className="bg-zinc-800 px-4 py-1 border border-white/15 rounded-full">Chat Page</Link>
 			<div className="flex flex-col gap-2 mt-12">
 				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">Why Choose Speek</p>
-				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">Features</p>
+				<p className="self-start bg-zinc-800 mb-[1000px] px-3 py-1 rounded-full">Features</p>
 				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">-</p>
 				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">--</p>
 				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">---</p>
@@ -122,7 +122,7 @@ export default function Home() {
 				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">---------------------------------------------------------------------------------------------------------</p>
 				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">----------------------------------------------------------------------------------------------------------</p>
 				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">-----------------------------------------------------------------------------------------------------------</p>
-				<p className="self-start bg-zinc-800 px-3 py-1 rounded-full">------------------------------------------------------------------------------------------------------------</p>
+				<p className="self-start bg-zinc-800 mb-[500px] px-3 py-1 rounded-full">------------------------------------------------------------------------------------------------------------</p>
 			</div>
 		</div>
 	);
