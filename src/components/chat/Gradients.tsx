@@ -1,4 +1,4 @@
-export default function Gradients({ color }: { color: string }) {
+export default function Gradients() {
     return (
         <>
             <div className="top-0 left-0 fixed bg-gradient-to-b from-zinc-950 to-transparent w-[calc(100%-6px)] h-12"></div>

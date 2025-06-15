@@ -108,7 +108,7 @@ export default function ClientContainer() {
                     editFunction={editIdCallback}
                     loading={loadingMessages}
                 />
-                <Gradients color="zinc-950" />
+                <Gradients />
                 <InputArea
                     noMessages={noMessages}
                     status={status}
