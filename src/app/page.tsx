@@ -10,7 +10,7 @@ export default function Home() {
 				lineHeight={30}
 				gap={10}
 				duration={1.5}
-				delay={0.35}
+				delay={0.2}
 				widthVariation={25}
 			/>
 			<div className="px-76">

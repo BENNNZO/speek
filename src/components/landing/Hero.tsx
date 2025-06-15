@@ -30,7 +30,7 @@ function AI() {
                     background: ["rgb(0, 0, 0)", "rgb(255, 255, 255)"],
                     width: ["7.5rem", "8rem"],
                     height: ["7.5rem", "8rem"],
-                    transition: { repeat: 0, repeatType: "mirror", repeatDelay: 1, delay: 2 }
+                    transition: { repeat: 0, repeatType: "mirror", repeatDelay: 1, delay: 0.4 }
                 }}
                 className="top-1/2 left-1/2 absolute place-items-center grid rounded-3xl -translate-1/2"
             >
@@ -38,7 +38,7 @@ function AI() {
                     animate={{
                         color: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"],
                         fontSize: ["6rem", "5rem"],
-                        transition: { repeat: 0, repeatType: "mirror", repeatDelay: 1, delay: 2 }
+                        transition: { repeat: 0, repeatType: "mirror", repeatDelay: 1, delay: 0.4 }
                     }}
                     className="top-1/2 left-1/2 absolute font-bold -translate-1/2"
                 >
@@ -74,7 +74,7 @@ function FadeWords({ text }: { text: string }) {
             {words.map((word, index) => (
                 <FadeInFromLeft
                     text={word}
-                    delay={(index / 5) + 0.5}
+                    delay={(index / 5) + 0.6}
                     key={index}
                     className="text-zinc-500 text-2xl"
                 />

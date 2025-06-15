@@ -20,15 +20,15 @@ export default function SideAnimations({ lineHeight, gap, delay, duration, width
 
         setLineCount(lineCount)
 
-        const animationResetInterval = setInterval(() => {
-            setLineCount(null)
+        // const animationResetInterval = setInterval(() => {
+        //     setLineCount(null)
 
-            setTimeout(() => {
-                setLineCount(lineCount)
-            }, 500)
-        }, delay * 1000 * lineCount + 500)
+        //     setTimeout(() => {
+        //         setLineCount(lineCount)
+        //     }, 500)
+        // }, delay * 1000 * lineCount + 500)
 
-        return () => clearInterval(animationResetInterval)
+        // return () => clearInterval(animationResetInterval)
     }, [])
 
     return (
@@ -51,7 +51,7 @@ export default function SideAnimations({ lineHeight, gap, delay, duration, width
                             }}
                             animate={{
                                 opacity: 1,
-                                width: `${(Math.random() * widthVariation) + (90 - widthVariation)}%`,
+                                width: `${(Math.random() * widthVariation) + (80 - widthVariation)}%`,
                                 transition: {
                                     duration,
                                     delay: delay * index,
@@ -87,7 +87,7 @@ export default function SideAnimations({ lineHeight, gap, delay, duration, width
                             }}
                             animate={{
                                 opacity: 1,
-                                width: `${(Math.random() * widthVariation) + (90 - widthVariation)}%`,
+                                width: `${(Math.random() * widthVariation) + (80 - widthVariation)}%`,
                                 transition: {
                                     duration,
                                     delay: delay * index,
