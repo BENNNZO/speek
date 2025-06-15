@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import Image from "next/image"
 
 export default function Hero() {
     return (
@@ -12,6 +13,13 @@ export default function Hero() {
                 </div>
                 <FadeWords text="Intuitive, Sleek, Minimal." />
             </div>
+            <Image
+                src="/chevron-down.svg"
+                width={32}
+                height={32}
+                alt="down icon"
+                className="bottom-12 left-1/2 absolute invert -translate-x-1/2 animate-pulse"
+            />
         </div>
     )
 }
